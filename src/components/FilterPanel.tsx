@@ -1,0 +1,45 @@
+import {FilterSection} from "./FilterSection.tsx";
+import type {Aggregations} from "../types/zenodo";
+
+
+interface FilterPanelProps {
+    aggregations: Aggregations;
+    onFilterChange: (params: URLSearchParams) => void;
+    activeFilters: URLSearchParams;
+}
+
+export const FilterPanel = ({aggregations, onFilterChange, activeFilters}: FilterPanelProps) => {
+    if (!aggregations) return null;
+
+    const handleFilter = (key: string, value: string) => {
+        const currentValues = activeFilters.getAll(key);
+        const newParams = new URLSearchParams(activeFilters);
+        if (currentValues.includes(value)) {
+            newParams.delete(key);
+            currentValues.filter(v => v !== value).forEach(v => newParams.append(key, v));
+        } else {
+            newParams.append(key, value);
+        }
+        onFilterChange(newParams);
+    };
+    // Zenodo uses 'type' for resource_type filters.
+    const getActiveFiltersFor = (key: string) => activeFilters.getAll(key === 'resource_type' ? 'type' : key);
+
+    return (
+        <aside className="w-full lg:w-1/4 lg:pr-8">
+            <h2 className="text-xl font-bold mb-4">Filters</h2>
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                {Object.entries(aggregations).map(([key, value]) => (
+                    <FilterSection
+                        key={key}
+                        title={value.label}
+                        buckets={value.buckets}
+                        filterKey={key}
+                        onFilterChange={(filterKey: string, bucketKey: string) => handleFilter(filterKey, bucketKey)}
+                        activeFilters={getActiveFiltersFor(key)}
+                    />
+                ))}
+            </div>
+        </aside>
+    );
+};
