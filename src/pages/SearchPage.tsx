@@ -79,11 +79,21 @@ export const SearchPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-            <div className="container mx-auto px-4 py-8">
-                <div className="mb-8">
-                    <SearchInput onSearch={handleSearch} initialQuery={query}/>
+            <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md shadow-sm">
+                <div className="relative">
+                    <img
+                        src="/data-commons-icon-blue.svg"
+                        alt="EOSC Logo"
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 h-9 w-auto cursor-pointer"
+                        onClick={() => navigate('/')}
+                    />
+                    <div className="container mx-auto px-4 py-3 ml-20 mr-20">
+                        <SearchInput onSearch={handleSearch} initialQuery={query}/>
+                    </div>
                 </div>
+            </header>
 
+            <main className="container mx-auto px-4 py-8 ml-20">
                 {summary && (
                     <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-blue-200">
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Search Summary</h3>
@@ -119,7 +129,7 @@ export const SearchPage = () => {
                         )}
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 };
