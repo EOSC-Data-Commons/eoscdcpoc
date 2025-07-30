@@ -1,31 +1,103 @@
-import type {ZenodoHit} from "../types/zenodo.ts";
+import type {BackendDataset} from "../types/zenodo.ts";
+import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, StarIcon} from "lucide-react";
 
-export const SearchResultItem = ({hit}: { hit: ZenodoHit }) => {
-    const creators = hit.metadata.creators.map(c => c.name).join(', ');
-    const description = hit.metadata.description
-        ? hit.metadata.description.replace(/<p>|<\/p>/g, '')
-        : 'No description available.';
+interface SearchResultItemProps {
+    hit: BackendDataset;
+}
+
+export const SearchResultItem = ({hit}: SearchResultItemProps) => {
+    // Clean HTML from description
+    const cleanDescription = (html: string) => {
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        const text = div.textContent || div.innerText || '';
+        return text.length > 300 ? text.substring(0, 300) + '...' : text;
+    };
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-            <a href={hit.links.self_html} target="_blank" rel="noopener noreferrer"
-               className="text-xl font-bold text-blue-700 hover:underline">
-                {hit.metadata.title}
-            </a>
-            <p className="text-sm text-gray-500 mt-1">
-                {creators} - Published: {hit.metadata.publication_date}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                    {hit.title}
+                </h3>
+                <div className="flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
+                    <StarIcon className="h-4 w-4 text-yellow-500"/>
+                    <span className="text-sm font-medium text-yellow-700">
+            {(hit.score * 100).toFixed(0)}%
+          </span>
+                </div>
+            </div>
+
+            <p className="text-gray-700 mb-4 leading-relaxed">
+                {cleanDescription(hit.description)}
             </p>
-            <p className="mt-3 text-gray-700 line-clamp-3">{description}</p>
-            <div className="mt-4 flex items-center gap-6 text-sm">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-medium">
-                    {hit.metadata.resource_type.title}
+
+            <div className="space-y-2 mb-4">
+                {hit.creators.length > 0 && (
+                    <div className="flex items-center space-x-2">
+                        <UserIcon className="h-4 w-4 text-gray-500"/>
+                        <span className="text-sm text-gray-600">
+              {hit.creators.slice(0, 3).join(', ')}
+                            {hit.creators.length > 3 && ` +${hit.creators.length - 3} more`}
+            </span>
+                    </div>
+                )}
+
+                <div className="flex items-center space-x-2">
+                    <CalendarIcon className="h-4 w-4 text-gray-500"/>
+                    <span className="text-sm text-gray-600">
+            Published: {new Date(hit.publication_date).toLocaleDateString()}
+          </span>
+                </div>
+
+                {hit.keywords && hit.keywords.length > 0 && (
+                    <div className="flex items-start space-x-2">
+                        <TagIcon className="h-4 w-4 text-gray-500 mt-0.5"/>
+                        <div className="flex flex-wrap gap-1">
+                            {hit.keywords.slice(0, 5).map((keyword, index) => (
+                                <span
+                                    key={index}
+                                    className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
+                                >
+                  {keyword}
                 </span>
-                <span className="text-gray-500">
-                    {hit.stats.views.toLocaleString()} views
+                            ))}
+                            {hit.keywords.length > 5 && (
+                                <span className="text-xs text-gray-500">
+                  +{hit.keywords.length - 5} more
                 </span>
-                <span className="text-gray-500">
-                    {hit.stats.downloads.toLocaleString()} downloads
-                </span>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div className="flex space-x-4">
+                    <a
+                        href={hit.doi}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                    >
+                        <ExternalLinkIcon className="h-4 w-4"/>
+                        <span className="text-sm font-medium">View DOI</span>
+                    </a>
+
+                    <a
+                        href={hit.zenodo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors"
+                    >
+                        <ExternalLinkIcon className="h-4 w-4"/>
+                        <span className="text-sm font-medium">View on Zenodo</span>
+                    </a>
+                </div>
+
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+          AI-powered search
+        </span>
             </div>
         </div>
     );

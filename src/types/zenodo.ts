@@ -1,41 +1,51 @@
+// Backend API types
+export interface BackendDataset {
+    creators: string[];
+    description: string;
+    doi: string;
+    keywords: string[] | null;
+    publication_date: string;
+    score: number;
+    title: string;
+    zenodo_url: string;
+}
+
+export interface BackendSearchResponse {
+    datasets: BackendDataset[];
+    summary: string;
+}
+
+// Legacy Zenodo types (keeping for compatibility if needed)
 export interface ZenodoHit {
     id: number;
     created: string;
     modified: string;
     doi: string;
+    doi_url: string;
+    conceptrecid: string;
+    conceptdoi: string;
     metadata: {
         title: string;
+        doi: string;
         publication_date: string;
         description: string;
-        creators: { name: string; affiliation: string | null }[];
+        access_right: string;
+        creators: Array<{
+            name: string;
+            affiliation?: string;
+        }>;
+        custom?: {
+            [key: string]: unknown;
+        };
         resource_type: {
             title: string;
             type: string;
+            subtype?: string;
         };
-    };
-    links: {
-        self_html: string;
-    };
-    stats: {
-        views: number;
-        downloads: number;
-    }
-}
-
-export interface AggregationBucket {
-    key: string;
-    doc_count: number;
-    label: string;
-    is_selected: boolean;
-    inner?: {
-        buckets: AggregationBucket[];
-    }
-}
-
-export interface Aggregations {
-    [key: string]: {
-        buckets: AggregationBucket[];
-        label: string;
+        license?: {
+            id: string;
+        };
+        relations?: unknown;
     };
 }
 
@@ -44,10 +54,9 @@ export interface ZenodoResponse {
         hits: ZenodoHit[];
         total: number;
     };
-    aggregations: Aggregations;
     links: {
         self: string;
         next?: string;
         prev?: string;
-    }
+    };
 }
