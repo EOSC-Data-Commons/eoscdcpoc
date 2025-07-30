@@ -45,7 +45,7 @@ export const SearchInput = ({
                 <button
                     type="submit"
                     disabled={loading}
-                    className="absolute right-2 top-2 w-24 h-12 bg-blue-500 text-white text-lg font-light rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="absolute right-2 top-2 w-24 h-12 bg-blue-500 text-white text-lg font-light rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed"
                 >
                     Search
                 </button>
