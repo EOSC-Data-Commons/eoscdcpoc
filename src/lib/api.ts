@@ -26,7 +26,6 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
     const response = await fetch(`${BACKEND_API_URL}/search`, {
       method: 'POST',
       headers: {
-        'Authorization': 'SECRET_KEY',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(requestBody)
