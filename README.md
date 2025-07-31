@@ -47,7 +47,7 @@ Open Terminal (Mac) or Command Prompt (Windows) and run these commands one by on
 
 Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/EOSC-Data-Commons/eoscdcpoc.git
 ```
 
 Navigate to the project folder:
