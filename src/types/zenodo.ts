@@ -60,3 +60,18 @@ export interface ZenodoResponse {
         prev?: string;
     };
 }
+
+export interface AggregationBucket {
+    key: string;
+    label: string;
+    doc_count: number;
+}
+
+export interface AggregationSection {
+    label: string;
+    buckets: AggregationBucket[];
+}
+
+export interface Aggregations {
+    [key: string]: AggregationSection;
+}
