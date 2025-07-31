@@ -4,7 +4,7 @@
 
 A web application for searching scientific datasets using natural language queries. This application works with the [EOSC Data Commons MCP server](https://github.com/EOSC-Data-Commons/data-commons-mcp) to help you discover scientific datasets through AI-powered search.
 
-> **Note**: We're currently using the free version of Mistral LLM, so search results may take 10-15 seconds to complete. Please be patient!
+> **Note**: You would currently be using the free version of Mistral LLM, so search results may take 10-15 seconds to complete. Please be patient! :)
 
 ## What You Need First
 
