@@ -8,6 +8,10 @@ export const LandingPage = () => {
         navigate(`/search?q=${encodeURIComponent(query)}`);
     };
 
+    const handleAbout = () => {
+        window.open('https://www.eosc-data-commons.eu/', '_blank');
+    };
+
     const dataCards = [
         "Glucose level changes in the liver of individuals with type 1 diabetes from 1980 to 2020",
         "Data about CO2 levels in europe between 1960 and 2020",
@@ -36,6 +40,14 @@ export const LandingPage = () => {
                 alt="EOSC"
                 className="absolute top-6 left-6 w-16 h-9 z-10"
             />
+
+            {/* About Button - Fixed in top right */}
+            <button
+                onClick={handleAbout}
+                className="absolute top-6 right-6 bg-white border border-eosc-border rounded-lg px-4 py-2 text-sm font-light text-eosc-text hover:bg-gray-50 hover:border-eosc-light-blue transition-colors cursor-pointer z-10"
+            >
+                About
+            </button>
 
             <div className="w-full max-w-7xl mx-auto">
                 {/* Header with Logo */}
