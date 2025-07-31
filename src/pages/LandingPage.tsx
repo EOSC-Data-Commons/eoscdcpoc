@@ -45,7 +45,7 @@ export const LandingPage = () => {
                 {/* Main Logo */}
                 <div className="flex justify-center mt-16 mb-8">
                     <img
-                        src="https://api.builder.io/api/v1/image/assets/TEMP/e0a0954257e9a8d26ba6ddf26c707b3d0b164151?width=1098"
+                        src="/logo-eosc-data-commons.svg"
                         alt="EOSC Data Commons"
                         className="w-full max-w-lg h-auto"
                     />
