@@ -10,9 +10,11 @@ A web application for searching scientific datasets using natural language queri
 
 Before using this application, you need to install these programs on your computer:
 
-1. **[Node.js](https://nodejs.org/en/download/)** (version 18 or newer)
+1. **[Node.js](https://nodejs.org/en/download/)** (version 20 or newer)
    - Download and install from the official website
    - This includes npm (package manager) automatically
+   - **Development version used**: Node.js 24.3.0
+   - **Minimum required**: Node.js 20.x LTS or newer
 
 2. **[Git](https://git-scm.com/downloads)**
    - Download and install from the official website
