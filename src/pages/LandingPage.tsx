@@ -9,7 +9,7 @@ export const LandingPage = () => {
     };
 
     const handleAbout = () => {
-        window.open('https://www.eosc-data-commons.eu/', '_blank');
+        window.open('https://www.eosc-data-commons.eu/', '_blank', 'noopener,noreferrer');
     };
 
     const dataCards = [
