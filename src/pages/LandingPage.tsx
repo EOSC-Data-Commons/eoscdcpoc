@@ -15,9 +15,9 @@ export const LandingPage = () => {
     ];
 
     const toolCards = [
-        "Analyze biomedical data with Galaxy",
-        "JupyterLab",
-        "RStudio"
+        {text: "Analyze biomedical data with Galaxy", url: "https://galaxyproject.org/"},
+        {text: "JupyterLab", url: "https://jupyter.org/"},
+        {text: "RStudio", url: "https://posit.co/products/open-source/rstudio/"}
     ];
 
     const features = [
@@ -26,7 +26,6 @@ export const LandingPage = () => {
         "AI-Powered Search",
         "Real-time Updates"
     ];
-
 
 
     return (
@@ -102,10 +101,11 @@ export const LandingPage = () => {
                                 {toolCards.map((card, index) => (
                                     <div
                                         key={index}
-                                        className="bg-white border border-eosc-border rounded-xl p-6 min-h-[75px] flex items-center justify-center"
+                                        onClick={() => window.open(card.url, '_blank')}
+                                        className="bg-white border border-eosc-border rounded-xl p-6 min-h-[75px] flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-eosc-light-blue transition-colors"
                                     >
                                         <p className="text-sm font-light text-black text-center">
-                                            {card}
+                                            {card.text}
                                         </p>
                                     </div>
                                 ))}
