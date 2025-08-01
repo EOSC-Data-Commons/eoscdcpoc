@@ -4,7 +4,7 @@
 
 A web application for searching scientific datasets using natural language queries. This application works with the [EOSC Data Commons MCP server](https://github.com/EOSC-Data-Commons/data-commons-mcp) to help you discover scientific datasets through AI-powered search.
 
-> **Note**: You would currently be using the free version of Mistral LLM, so search results may take 10-15 seconds to complete. Please be patient! :)
+> **Note**: You would currently be using the free version of Mistral LLM, so search results may take 10–15 seconds to complete. Please be patient! :)
 
 ## What You Need First
 
@@ -62,9 +62,12 @@ Install dependencies:
 npm install
 ```
 
-### Step 2: Start the Backend Server
+### Step 2: Set Up the Backend (EOSC Data Commons MCP server)
 
-First, make sure the [EOSC Data Commons MCP server](https://github.com/EOSC-Data-Commons/data-commons-mcp) is running on port 8000. Follow the instructions in the backend repository.
+Follow the instructions in the backend [README](https://github.com/EOSC-Data-Commons/data-commons-mcp) to set up and run the server. The frontend expects the backend to be running on port 8000 by default.
+
+> **Note:**
+> If you are running the backend with Docker and encounter an error of HTTP 401, related to `SEARCH_API_KEY=SECRET_KEY_YOU_CAN_USE_IN_FRONTEND_TO_AVOID_SPAM`, try removing or commenting out the `SEARCH_API_KEY` line in your backend `.env` file. The backend does not require this key unless you want to restrict API access.
 
 ### Step 3: Start the Frontend
 
