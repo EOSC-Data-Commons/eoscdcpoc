@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
     server: {
-        host: "::",
+        host: "localhost", // Changed from "::" to "localhost" to restrict to local only
         port: 8080,
         proxy: {
             '/api': {
