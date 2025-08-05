@@ -11,7 +11,7 @@ export interface BackendDataset {
 }
 
 export interface BackendSearchResponse {
-    datasets: BackendDataset[];
+    hits: BackendDataset[];
     summary: string;
 }
 
