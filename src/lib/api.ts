@@ -1,4 +1,5 @@
 import {BackendSearchResponse} from '../types/zenodo';
+import { logError } from '../dev/lib/utils';
 
 // --- API HELPERS ---
 export const BACKEND_API_URL = '/api';
@@ -38,7 +39,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
         const data: BackendSearchResponse = await response.json();
         return data;
     } catch (error) {
-        console.error('Search API error:', error);
+        logError(error, 'Search API');
         throw error;
     }
 };
