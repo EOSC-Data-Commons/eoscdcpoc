@@ -74,7 +74,7 @@ export const SearchPage = () => {
         );
     }
 
-    const datasets = results?.datasets || [];
+    const datasets = results?.hits || [];
     const summary = results?.summary || '';
 
     return (
