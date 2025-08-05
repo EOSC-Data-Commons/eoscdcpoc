@@ -2,7 +2,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {LandingPage} from "./pages/LandingPage";
 import {SearchPage} from "./pages/SearchPage";
 import NotFound from "./pages/NotFound";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import {ErrorBoundary} from "./components/ErrorBoundary";
 
 
 export default function App() {
