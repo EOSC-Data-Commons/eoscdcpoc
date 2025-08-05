@@ -1,5 +1,5 @@
 import {BackendSearchResponse} from '../types/zenodo';
-import { logError } from '../dev/lib/utils';
+import {logError} from '../dev/lib/utils';
 
 // --- API HELPERS ---
 export const BACKEND_API_URL = '/api';
@@ -20,7 +20,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
                 content: query
             }
         ],
-        model: 'mistral-medium-latest'
+        model: 'gpt-4.1-nano'
     };
 
     try {
