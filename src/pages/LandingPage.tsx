@@ -1,5 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {SearchInput} from "../components/SearchInput";
+import {FaLinkedin} from "react-icons/fa";
+import {FaBluesky} from "react-icons/fa6";
+import {MdEmail} from "react-icons/md";
 
 export const LandingPage = () => {
     const navigate = useNavigate();
@@ -123,30 +126,89 @@ export const LandingPage = () => {
                                 ))}
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Features Footer */}
-                <div className="py-8 border-t border-eosc-border">
-                    <div className="flex flex-wrap justify-center items-center gap-8 px-4">
-                        {features.map((feature, index) => (
-                            <div key={index} className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-eosc-dark-blue rounded-full"></div>
-                                <span className="text-base font-light text-eosc-gray">
+                        {/* Features Section  */}
+                        <div className="py-8">
+                            <div className="flex flex-wrap justify-center items-center gap-8 px-4">
+                                {features.map((feature, index) => (
+                                    <div key={index} className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-eosc-dark-blue rounded-full"></div>
+                                        <span className="text-base font-light text-eosc-gray">
                                     • {feature}
                                 </span>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-
-                    {/* Made with love in Europe */}
-                    <div className="text-center mt-6">
-                        <p className="text-sm font-light text-eosc-gray">
-                            Made with ❤️ in Europe 🇪🇺
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
+            {/* Footer  */}
+            <footer className="py-8 border-t border-eosc-border w-full">
+                <div className="flex justify-between items-center px-10 relative w-full">
+                    {/* Left (empty for symmetry) */}
+                    <div className="w-1/3"></div>
+
+                    {/* Center: Made with love */}
+                    <div className="w-1/3 flex justify-center">
+                        <p className="text-sm font-light text-eosc-gray text-center">
+                            Made with ❤️ in Europe 🇪🇺
+                        </p>
+                    </div>
+
+                    {/* Right: Logo Placeholder and Social Links */}
+                    <div className="w-1/3 flex flex-col items-end gap-2">
+                        <a
+                            target="_blank"
+                            rel="noreferrer"
+                            href="http://www.eosc-data-commons.eu"
+                            aria-label="Link to Homepage"
+                            className="cursor-pointer mb-2"
+                        >
+                            <div className="w-64">
+                                <div className="w-full h-16 flex items-center justify-center  text-sm ">
+                                    <img
+                                        src="/logo-eosc-data-commons.svg"
+                                        alt="EOSC Data Commons"
+                                        className="w-full max-w-lg h-auto"
+                                    />
+                                </div>
+                            </div>
+                        </a>
+                        <div className="flex items-center gap-4">
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label="linkedin"
+                                title="LinkedIn Profile"
+                                href="https://www.linkedin.com/company/eosc-data-commons/"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <FaLinkedin size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label="bluesky"
+                                title="Bluesky Profile"
+                                href="https://bsky.app/profile/eosc-data-commons.bsky.social"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <FaBluesky size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                href="mailto:eosc-data-commons-po@mailman.egi.eu"
+                                aria-label="Mail"
+                                title="Mail"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <MdEmail size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 };
