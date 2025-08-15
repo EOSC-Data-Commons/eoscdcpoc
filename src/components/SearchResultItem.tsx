@@ -1,5 +1,6 @@
 import type {BackendDataset} from "../types/zenodo.ts";
-import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, StarIcon} from "lucide-react";
+import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
+import {ProportionalStar} from './ProportionalStar';
 
 interface SearchResultItemProps {
     hit: BackendDataset;
@@ -14,6 +15,8 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
         return text.length > 300 ? text.substring(0, 300) + '...' : text;
     };
 
+    const scorePercent = (hit.score || 0) * 100;
+
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
@@ -21,10 +24,10 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                     {hit.title}
                 </h3>
                 <div className="flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
-                    <StarIcon className="h-4 w-4 text-yellow-500"/>
+                    <ProportionalStar percent={scorePercent} className="h-4 w-4"/>
                     <span className="text-sm font-medium text-yellow-700">
-            {(hit.score * 100).toFixed(0)}%
-          </span>
+                        {scorePercent.toFixed(0)}%
+                    </span>
                 </div>
             </div>
 
@@ -37,17 +40,17 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                     <div className="flex items-center space-x-2">
                         <UserIcon className="h-4 w-4 text-gray-500"/>
                         <span className="text-sm text-gray-600">
-              {hit.creators.slice(0, 3).join(', ')}
+                            {hit.creators.slice(0, 3).join(', ')}
                             {hit.creators.length > 3 && ` +${hit.creators.length - 3} more`}
-            </span>
+                        </span>
                     </div>
                 )}
 
                 <div className="flex items-center space-x-2">
                     <CalendarIcon className="h-4 w-4 text-gray-500"/>
                     <span className="text-sm text-gray-600">
-            Published: {new Date(hit.publication_date).toLocaleDateString()}
-          </span>
+                        Published: {new Date(hit.publication_date).toLocaleDateString()}
+                    </span>
                 </div>
 
                 {hit.keywords && hit.keywords.length > 0 && (
@@ -55,17 +58,15 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                         <TagIcon className="h-4 w-4 text-gray-500 mt-0.5"/>
                         <div className="flex flex-wrap gap-1">
                             {hit.keywords.slice(0, 5).map((keyword, index) => (
-                                <span
-                                    key={index}
-                                    className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
-                                >
-                  {keyword}
-                </span>
+                                <span key={index}
+                                      className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
+                                    {keyword}
+                                </span>
                             ))}
                             {hit.keywords.length > 5 && (
                                 <span className="text-xs text-gray-500">
-                  +{hit.keywords.length - 5} more
-                </span>
+                                    +{hit.keywords.length - 5} more
+                                </span>
                             )}
                         </div>
                     </div>
@@ -74,30 +75,18 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex space-x-4">
-                    <a
-                        href={hit.doi}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
-                    >
+                    <a href={hit.doi} target="_blank" rel="noopener noreferrer"
+                       className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>
                         <span className="text-sm font-medium">View DOI</span>
                     </a>
-
-                    <a
-                        href={hit.zenodo_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors"
-                    >
+                    <a href={hit.zenodo_url} target="_blank" rel="noopener noreferrer"
+                       className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>
                         <span className="text-sm font-medium">View on Zenodo</span>
                     </a>
                 </div>
-
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-          AI-powered search
-        </span>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
             </div>
         </div>
     );
