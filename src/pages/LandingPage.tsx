@@ -123,29 +123,31 @@ export const LandingPage = () => {
                                 ))}
                             </div>
                         </div>
+                        {/* Features Section  */}
+                        <div className="py-8">
+                            <div className="flex flex-wrap justify-center items-center gap-8 px-4">
+                                {features.map((feature, index) => (
+                                    <div key={index} className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-eosc-dark-blue rounded-full"></div>
+                                        <span className="text-base font-light text-eosc-gray">
+                                    • {feature}
+                                </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Features Footer */}
-                <div className="py-8 border-t border-eosc-border">
-                    <div className="flex flex-wrap justify-center items-center gap-8 px-4">
-                        {features.map((feature, index) => (
-                            <div key={index} className="flex items-center gap-3">
-                                <div className="w-2 h-2 bg-eosc-dark-blue rounded-full"></div>
-                                <span className="text-base font-light text-eosc-gray">
-                                    • {feature}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
 
-                    {/* Made with love in Europe */}
-                    <div className="text-center mt-6">
+                {/* Footer  */}
+                <footer className="py-8 border-t border-eosc-border">
+                    <div className="text-center">
                         <p className="text-sm font-light text-eosc-gray">
                             Made with ❤️ in Europe 🇪🇺
                         </p>
                     </div>
-                </div>
+                </footer>
             </div>
         </div>
     );
