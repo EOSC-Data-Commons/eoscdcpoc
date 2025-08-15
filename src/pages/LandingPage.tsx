@@ -158,12 +158,14 @@ export const LandingPage = () => {
                     {/* Right: Logo Placeholder and Social Links */}
                     <div className="w-1/3 flex flex-col items-end gap-2">
                         <a
-                            onClick={handleAbout}
+                            target="_blank"
+                            rel="noreferrer"
+                            href="http://www.eosc-data-commons.eu"
                             aria-label="Link to Homepage"
                             className="cursor-pointer mb-2"
                         >
                             <div className="w-64">
-                                <div className=" w-full h-16 flex items-center justify-center  text-sm ">
+                                <div className="w-full h-16 flex items-center justify-center  text-sm ">
                                     <img
                                         src="/logo-eosc-data-commons.svg"
                                         alt="EOSC Data Commons"
