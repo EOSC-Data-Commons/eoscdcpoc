@@ -143,20 +143,10 @@ export const LandingPage = () => {
                 </div>
             </div>
             {/* Footer  */}
-            <footer className="py-8 border-t border-eosc-border w-full">
-                <div className="flex justify-between items-center px-10 relative w-full">
-                    {/* Left (empty for symmetry) */}
-                    <div className="w-1/3"></div>
-
-                    {/* Center: Made with love */}
-                    <div className="w-1/3 flex justify-center">
-                        <p className="text-sm font-light text-eosc-gray text-center">
-                            Made with ❤️ in Europe 🇪🇺
-                        </p>
-                    </div>
-
+            <footer className="py-8 border-t border-eosc-border w-full relative">
+                <div className="flex justify-end items-center px-10 w-full">
                     {/* Right: Logo Placeholder and Social Links */}
-                    <div className="w-1/3 flex flex-col items-end gap-2">
+                    <div className="flex flex-col items-end gap-2">
                         <a
                             target="_blank"
                             rel="noreferrer"
@@ -206,6 +196,12 @@ export const LandingPage = () => {
                                 <MdEmail size={24} className="text-eosc-dark-blue"/>
                             </a>
                         </div>
+                    </div>
+                    {/* Center: Made with love (absolutely centered) */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <p className="text-sm font-light text-eosc-gray text-center">
+                            Made with ❤️ in Europe 🇪🇺
+                        </p>
                     </div>
                 </div>
             </footer>
