@@ -45,7 +45,7 @@ export const ProportionalStar: React.FC<ProportionalStarProps> = ({
             </svg>
         );
     }
-    if (pct >= 99.9) {
+    if (pct >= FULL_FILL_THRESHOLD) {
         return (
             <svg viewBox="0 0 96.26 91.88" className={className} role="img" aria-label="100%">
                 <title>100%</title>
