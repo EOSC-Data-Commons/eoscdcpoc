@@ -34,13 +34,7 @@ export const ProportionalStar: React.FC<ProportionalStarProps> = ({
             <svg viewBox="0 0 96.26 91.88" className={className} role="img" aria-label="0%">
                 <title>0%</title>
                 <path
-    // Edge cases for crisp rendering
-    if (pct <= 0) {
-        return (
-            <svg viewBox="0 0 96.26 91.88" className={className} role="img" aria-label="0%">
-                <title>0%</title>
-                <path
-                    d={STAR_PATH_D}
+                    d={pathD}
                     transform="translate(-3.43 -1.7)"
                     fill={showEmptyOutline ? 'none' : 'transparent'}
                     stroke={color}
@@ -51,7 +45,7 @@ export const ProportionalStar: React.FC<ProportionalStarProps> = ({
             </svg>
         );
     }
-    if (pct >= FULL_FILL_THRESHOLD) {
+    if (pct >= 99.9) {
         return (
             <svg viewBox="0 0 96.26 91.88" className={className} role="img" aria-label="100%">
                 <title>100%</title>
