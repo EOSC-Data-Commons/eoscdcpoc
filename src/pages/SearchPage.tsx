@@ -143,7 +143,7 @@ export const SearchPage = () => {
                 </div>
             </main>
             {/* Footer only when results list is present */}
-            {!loading && !error && datasets.length > 0 && (
+            {!loading && (
                 <Footer translucent/>
             )}
         </div>
