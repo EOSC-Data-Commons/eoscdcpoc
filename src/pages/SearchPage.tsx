@@ -6,6 +6,7 @@ import {addToSearchHistory} from "../lib/history.ts";
 import {BookIcon, LoaderIcon, XCircleIcon} from "lucide-react";
 import {SearchInput} from "../components/SearchInput.tsx";
 import {SearchResultItem} from "../components/SearchResultItem.tsx";
+import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 
 export const SearchPage = () => {
     const navigate = useNavigate();
@@ -50,6 +51,7 @@ export const SearchPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+            <AlphaDisclaimer />
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md shadow-sm">
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <img

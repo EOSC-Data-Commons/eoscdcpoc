@@ -3,6 +3,7 @@ import {SearchInput} from "../components/SearchInput";
 import {FaLinkedin} from "react-icons/fa";
 import {FaBluesky} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
+import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 
 export const LandingPage = () => {
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ export const LandingPage = () => {
 
     return (
         <div className="min-h-screen bg-eosc-bg flex flex-col justify-center items-center px-4 relative">
+            <AlphaDisclaimer />
             {/* EOSC Icon - Fixed in top left */}
             <img
                 src="/data-commons-icon-blue.svg"
@@ -143,7 +145,7 @@ export const LandingPage = () => {
                 </div>
             </div>
             {/* Footer  */}
-            <footer className="py-8 border-t border-eosc-border w-full relative">
+            <footer className="py-8 border-t border-eosc-border w-full relative mt-8">
                 <div className="flex justify-end items-center px-10 w-full">
                     {/* Right: Logo Placeholder and Social Links */}
                     <div className="flex flex-col items-end gap-2">
