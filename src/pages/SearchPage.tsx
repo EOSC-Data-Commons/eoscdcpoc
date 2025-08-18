@@ -7,6 +7,7 @@ import {BookIcon, LoaderIcon, XCircleIcon} from "lucide-react";
 import {SearchInput} from "../components/SearchInput.tsx";
 import {SearchResultItem} from "../components/SearchResultItem.tsx";
 import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
+import {Footer} from "../components/Footer";
 
 export const SearchPage = () => {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ export const SearchPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-            <AlphaDisclaimer />
+            <AlphaDisclaimer/>
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md shadow-sm">
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <img
@@ -79,7 +80,8 @@ export const SearchPage = () => {
                     <div className="flex-1 relative" aria-busy={loading} aria-live="polite">
                         {/* Loading overlay */}
                         {loading && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-10 rounded-lg">
+                            <div
+                                className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-10 rounded-lg">
                                 <div className="flex items-center space-x-2 text-gray-700">
                                     <LoaderIcon className="h-6 w-6 animate-spin text-blue-600"/>
                                     <span className="text-sm sm:text-base">Searching datasets...</span>
@@ -89,7 +91,8 @@ export const SearchPage = () => {
 
                         {/* Error state inline */}
                         {!loading && error && (
-                            <div className="p-6 bg-white rounded-lg shadow-sm border border-red-200 text-center space-y-4">
+                            <div
+                                className="p-6 bg-white rounded-lg shadow-sm border border-red-200 text-center space-y-4">
                                 <XCircleIcon className="h-12 w-12 text-red-500 mx-auto"/>
                                 <div>
                                     <h2 className="text-xl font-semibold text-gray-900 mb-2">Search Error</h2>
@@ -105,10 +108,13 @@ export const SearchPage = () => {
                         )}
 
                         {/* Results (hidden from screen readers while loading to prevent duplicate announcements) */}
-                        <div className={loading ? 'opacity-0 pointer-events-none select-none' : 'opacity-100 transition-opacity'} aria-hidden={loading}>
+                        <div
+                            className={loading ? 'opacity-0 pointer-events-none select-none' : 'opacity-100 transition-opacity'}
+                            aria-hidden={loading}>
                             {!loading && !error && (
                                 datasets.length === 0 ? (
-                                    <div className="text-center py-12 bg-white/60 rounded-lg border border-dashed border-gray-300">
+                                    <div
+                                        className="text-center py-12 bg-white/60 rounded-lg border border-dashed border-gray-300">
                                         <BookIcon className="h-12 w-12 text-gray-400 mx-auto mb-4"/>
                                         <h3 className="text-lg font-medium text-gray-900 mb-2">No datasets found</h3>
                                         <p className="text-gray-600">Try adjusting your search terms or filters.</p>
@@ -136,6 +142,10 @@ export const SearchPage = () => {
                     </div>
                 </div>
             </main>
+            {/* Footer only when results list is present */}
+            {!loading && !error && datasets.length > 0 && (
+                <Footer translucent/>
+            )}
         </div>
     );
 };
