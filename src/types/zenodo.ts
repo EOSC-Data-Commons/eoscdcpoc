@@ -6,7 +6,7 @@ export interface BackendDataset {
     id: string | number;
     keywords: string[] | null;
     publication_date: string;
-    resource_type: string
+    resource_type: string;
     score: number;
     title: string;
     zenodo_url: string;
