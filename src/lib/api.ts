@@ -20,7 +20,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
                 content: query
             }
         ],
-        model: 'gpt-4.1-nano'
+        model: 'mistral/mistral-small-latest'
     };
 
     try {
