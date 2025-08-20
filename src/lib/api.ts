@@ -1,5 +1,5 @@
 import {BackendSearchResponse} from '../types/zenodo';
-import {logError} from '../dev/lib/utils';
+import {logError} from './utils.ts';
 
 // --- API HELPERS ---
 export const BACKEND_API_URL = '/api';
