@@ -75,12 +75,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex space-x-4">
-                    <a href={hit.doi} target="_blank" rel="noopener noreferrer"
-                       className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors">
-                        <ExternalLinkIcon className="h-4 w-4"/>
-                        <span className="text-sm font-medium">View DOI</span>
-                    </a>
-                    <a href={hit.zenodo_url} target="_blank" rel="noopener noreferrer"
+                    <a href={hit.url} target="_blank" rel="noopener noreferrer"
                        className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>
                         <span className="text-sm font-medium">View on Zenodo</span>
