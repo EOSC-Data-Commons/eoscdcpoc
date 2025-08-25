@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(() => ({
     server: {
         host: "localhost", // Changed from "::" to "localhost" to restrict to local only
-        port: 8080,
+        port: 5173,
         proxy: {
             '/api': {
                 target: 'http://127.0.0.1:8000',
