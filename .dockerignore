@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+dist/spa
+
+# VCS
+.git
+.gitignore
+
+# IDE / Editor
+.idea
+.vscode
+*.swp
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+*.log
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Tests / coverage
+coverage
+
+# Docker / compose artifacts
+Dockerfile
+docker-compose.yml
+
+# Misc
+.DS_Store
+
