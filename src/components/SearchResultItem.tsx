@@ -1,13 +1,13 @@
 import type {BackendDataset} from "../types/zenodo.ts";
 import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
+import {CitationExport} from './CitationExport';
 
 interface SearchResultItemProps {
     hit: BackendDataset;
 }
 
 export const SearchResultItem = ({hit}: SearchResultItemProps) => {
-    // Clean HTML from description
     const cleanDescription = (html: string) => {
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -75,16 +75,13 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex space-x-4">
-                    <a href={hit.doi} target="_blank" rel="noopener noreferrer"
-                       className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors">
-                        <ExternalLinkIcon className="h-4 w-4"/>
-                        <span className="text-sm font-medium">View DOI</span>
-                    </a>
                     <a href={hit.zenodo_url} target="_blank" rel="noopener noreferrer"
-                       className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors">
+                       aria-label={`View dataset ${hit.title}`}
+                       className="inline-flex items-center justify-center gap-1 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>
-                        <span className="text-sm font-medium">View on Zenodo</span>
+                        <span className="leading-none">View</span>
                     </a>
+                    <CitationExport dataset={hit} />
                 </div>
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
             </div>
