@@ -1,13 +1,13 @@
 import type {BackendDataset} from "../types/zenodo.ts";
 import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
+import {CitationExport} from './CitationExport';
 
 interface SearchResultItemProps {
     hit: BackendDataset;
 }
 
 export const SearchResultItem = ({hit}: SearchResultItemProps) => {
-    // Clean HTML from description
     const cleanDescription = (html: string) => {
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -81,6 +81,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                         <ExternalLinkIcon className="h-4 w-4"/>
                         <span className="leading-none">View</span>
                     </a>
+                    <CitationExport dataset={hit} />
                 </div>
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
             </div>
