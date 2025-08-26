@@ -8,6 +8,7 @@ import {SearchInput} from "../components/SearchInput.tsx";
 import {SearchResultItem} from "../components/SearchResultItem.tsx";
 import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 import {Footer} from "../components/Footer";
+import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
 
 export const SearchPage = () => {
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ export const SearchPage = () => {
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md shadow-sm">
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <img
-                        src="/data-commons-icon-blue.svg"
+                        src={dataCommonsIconBlue}
                         alt="EOSC Logo"
                         className="absolute left-4 sm:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 h-9 w-auto cursor-pointer"
                         onClick={() => navigate('/')}
