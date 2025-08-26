@@ -1,4 +1,4 @@
-![EOSC Data Commons](./public/data-commons-logo.png)
+![EOSC Data Commons](src/assets/data-commons-logo.png)
 
 # EOSC Data Commons Frontend
 
