@@ -1,5 +1,5 @@
 import React from 'react';
-import {getUserErrorMessage, logError} from '../dev/lib/utils';
+import {getUserErrorMessage, logError} from '../lib/utils.ts';
 
 interface ErrorBoundaryProps {
     children: React.ReactNode;

@@ -75,7 +75,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex space-x-4">
-                    <a href={hit.zenodo_url} target="_blank" rel="noopener noreferrer"
+                    <a href={hit.url} target="_blank" rel="noopener noreferrer"
                        aria-label={`View dataset ${hit.title}`}
                        className="inline-flex items-center justify-center gap-1 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>

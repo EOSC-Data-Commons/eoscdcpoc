@@ -2,14 +2,13 @@
 export interface BackendDataset {
     creators: string[];
     description: string;
-    doi: string;
-    id: string | number;
+    id: string;
     keywords: string[] | null;
     publication_date: string;
     resource_type: string;
     score: number;
     title: string;
-    zenodo_url: string;
+    url: string;
 }
 
 export interface BackendSearchResponse {

@@ -130,7 +130,7 @@ export const SearchPage = () => {
                                         <div className="space-y-4 mb-8">
                                             {datasets.map((dataset, index) => (
                                                 <SearchResultItem
-                                                    key={`${dataset.doi}-${index}`}
+                                                    key={`${dataset.id}-${index}`}
                                                     hit={dataset}
                                                 />
                                             ))}
