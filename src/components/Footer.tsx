@@ -1,6 +1,7 @@
 import {FaLinkedin} from 'react-icons/fa';
 import {FaBluesky} from 'react-icons/fa6';
 import {MdEmail} from 'react-icons/md';
+import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
 
 interface FooterProps {
     translucent?: boolean;
@@ -27,7 +28,7 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
                         <div className="w-64">
                             <div className="w-full h-16 flex items-center justify-center text-sm">
                                 <img
-                                    src="/logo-eosc-data-commons.svg"
+                                    src={eoscLogo}
                                     alt="EOSC Data Commons"
                                     className="w-full max-w-lg h-auto"
                                 />
