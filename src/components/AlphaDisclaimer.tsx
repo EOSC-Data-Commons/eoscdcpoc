@@ -52,7 +52,7 @@ export const AlphaDisclaimer = () => {
                     <X className="w-4 h-4"/>
                 </button>
                 <p className="text-xs leading-relaxed text-gray-700">
-                    <span className="font-semibold tracking-wide text-blue-700">ALPHA NOTICE:</span> This service is in
+                    <span className="font-semibold tracking-wide text-blue-700">NOTICE:</span> This service is in
                     an early alpha stage. Search results and metadata may be incomplete, outdated, or inaccurate. Please
                     verify critical information independently.
                 </p>
