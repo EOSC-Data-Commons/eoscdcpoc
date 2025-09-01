@@ -78,6 +78,38 @@ npm run dev
 
 The application will open at http://localhost:8080
 
+## Run with Docker (Alternative to Local Node.js)
+
+If you prefer not to install Node.js and npm, you can run the frontend directly using Docker. The backend server must still be running and accessible (see above).
+
+### Pull the Docker image
+
+You can pull the latest published image from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
+```
+
+Or pull a specific version (replace `<version>` with the version you want, e.g., `1.2.3`):
+
+```bash
+docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:<version>
+```
+
+### Run the Docker container
+
+To run the frontend container and map it to your local port 8080:
+
+```bash
+docker run -p 8080:80 ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
+```
+
+- The app will be available at http://localhost:8080
+- Make sure your backend server is running and accessible to the container (default: http://localhost:8000)
+
+> **Note:** If running backend and frontend in separate containers, you may need to adjust CORS or network settings for them to communicate.
+
+
 ## How to Search
 
 1. Open the application in your web browser
