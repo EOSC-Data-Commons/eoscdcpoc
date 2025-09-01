@@ -1,15 +1,7 @@
 services:
   frontend:
-    build: .
+    image: ghcr.io/EOSC-Data-Commons/eoscdcpoc-frontend:latest
     ports:
       - "127.0.0.1:5173:80"
     environment:
       - NODE_ENV=production
-  backend:
-    image: data-commons-mcp-mcp
-    ports:
-      - "8000:8000"
-    environment:
-      - RUST_LOG=info
-    env_file:
-      - keys.env
