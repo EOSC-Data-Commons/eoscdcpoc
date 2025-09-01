@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/EOSC-Data-Commons/eoscdcpoc-frontend:latest
+    image: ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
     ports:
       - "127.0.0.1:5173:80"
     environment:
