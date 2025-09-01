@@ -2,6 +2,8 @@ import {useNavigate} from "react-router-dom";
 import {SearchInput} from "../components/SearchInput";
 import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 import {Footer} from "../components/Footer";
+import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
+import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
 
 export const LandingPage = () => {
     const navigate = useNavigate();
@@ -39,7 +41,7 @@ export const LandingPage = () => {
             <AlphaDisclaimer/>
             {/* EOSC Icon - Fixed in top left */}
             <img
-                src="/data-commons-icon-blue.svg"
+                src={dataCommonsIconBlue}
                 alt="EOSC"
                 className="absolute top-6 left-6 w-16 h-9 z-10"
             />
@@ -58,7 +60,7 @@ export const LandingPage = () => {
                     {/* Main Logo */}
                     <div className="flex justify-center mt-16 mb-8">
                         <img
-                            src="/logo-eosc-data-commons.svg"
+                            src={eoscLogo}
                             alt="EOSC Data Commons"
                             className="w-full max-w-lg h-auto"
                         />
