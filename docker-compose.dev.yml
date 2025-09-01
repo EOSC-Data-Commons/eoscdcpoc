@@ -16,7 +16,7 @@ services:
     depends_on:
       - backend
   backend:
-    image: data-commons-mcp-mcp # Or use build: ../backend if you have the backend source
+    image: data-commons-mcp-mcp
     ports:
       - "8000:8000"
     environment:
