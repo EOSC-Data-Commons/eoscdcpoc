@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "5173:80"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./vite.config.ts:/app/vite.config.ts
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./package.json:/app/package.json
+      - ./tailwind.config.ts:/app/tailwind.config.ts
+      - ./nginx.conf:/app/nginx.conf
+    depends_on:
+      - backend
+  backend:
+    image: data-commons-mcp-mcp # Or use build: ../backend if you have the backend source
+    ports:
+      - "8000:8000"
+    environment:
+      - RUST_LOG=debug
+    env_file:
+      - keys.env
+
