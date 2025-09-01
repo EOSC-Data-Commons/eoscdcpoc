@@ -12,7 +12,7 @@ services:
       - ./tsconfig.json:/app/tsconfig.json
       - ./package.json:/app/package.json
       - ./tailwind.config.ts:/app/tailwind.config.ts
-      - ./nginx.conf:/app/nginx.conf
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - backend
   backend:
@@ -23,4 +23,3 @@ services:
       - RUST_LOG=debug
     env_file:
       - keys.env
-

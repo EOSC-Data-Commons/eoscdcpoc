@@ -18,10 +18,10 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine AS runtime
 
-# Copy built assets from build stage (using correct output directory)
+# Copy built assets from build stage
 COPY --from=build /app/dist/spa /usr/share/nginx/html
 
-# Copy nginx configuration (optional - nginx default config should work for most SPAs)
+# Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
