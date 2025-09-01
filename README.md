@@ -76,7 +76,20 @@ Run this command to start the frontend:
 npm run dev
 ```
 
-The application will open at http://localhost:8080
+The application will open at http://localhost:5173
+
+## Authenticate with GitHub Container Registry (GHCR)
+
+Before pulling images from GHCR, you may need to log in. Use the following command:
+
+```bash
+docker login ghcr.io
+```
+
+You will be prompted for your GitHub username and a [personal access token](https://docs.github.com/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry) with appropriate permissions (use as password).
+
+For more details, see the official GitHub documentation:  
+https://docs.github.com/packages/working-with-a-github-packages-registry/working-with-the-container-registry
 
 ## Run with Docker (Alternative to Local Node.js)
 
@@ -98,13 +111,13 @@ docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:<version>
 
 ### Run the Docker container
 
-To run the frontend container and map it to your local port 8080:
+To run the frontend container and map it to your local port 5173:
 
 ```bash
-docker run -p 8080:80 ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
+docker run -p 5173:80 ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
 ```
 
-- The app will be available at http://localhost:8080
+- The app will be available at http://localhost:5173
 - Make sure your backend server is running and accessible to the container (default: http://localhost:8000)
 
 > **Note:** If running backend and frontend in separate containers, you may need to adjust CORS or network settings for them to communicate.
