@@ -1,9 +1,6 @@
 name: Build and Publish Frontend Docker Image
 
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+on: [pull_request]
 
 jobs:
   build-and-push:
