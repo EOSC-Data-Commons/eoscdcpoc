@@ -11,19 +11,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Backup PR branch package.json
+        run: cp package.json package.pr.json
       - name: Get base branch package.json
         run: |
           git fetch origin main
           git checkout origin/main -- package.json
           mv package.json package.base.json
-          git checkout -
-      - name: Get PR branch package.json
-        run: |
-          cp package.json package.pr.json
+      - name: Restore PR branch package.json
+        run: mv package.pr.json package.json
       - name: Compare versions
         run: |
           BASE_VERSION=$(jq -r .version package.base.json)
-          PR_VERSION=$(jq -r .version package.pr.json)
+          PR_VERSION=$(jq -r .version package.json)
           echo "Base version: $BASE_VERSION"
           echo "PR version: $PR_VERSION"
           if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
@@ -32,4 +32,3 @@ jobs:
           fi
           echo "Version bumped."
         shell: bash
-
