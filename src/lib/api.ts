@@ -20,7 +20,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
                 content: query
             }
         ],
-        model: 'mistral/mistral-small-latest'
+        model: 'mistralai/mistral-small-latest'
     };
 
     try {
