@@ -3,7 +3,8 @@ import type { BackendDataset } from "../types/zenodo";
 const sanitize = (value: string) => value.replace(/[{}]/g, "");
 
 const firstCreatorLastName = (creators: string[]) => {
-    if (!creators.length) return "unknown";
+
+    if (!creators?.length) return "unknown";
     const first = creators[0];
     // Expect formats like "Last, First" or "First Last"
     if (first.includes(",")) {
@@ -19,7 +20,7 @@ const extractYear = (dateStr: string) => {
 };
 
 const formatAuthorsBibTeX = (creators: string[]) => {
-    return creators.map(c => c.replace(/\s+/g, ' ').trim()).join(" and ");
+    return creators?.map(c => c.replace(/\s+/g, ' ').trim()).join(" and ");
 };
 
 const extractDOI = (zenodo_url: string): string | undefined => {
@@ -68,7 +69,7 @@ export const generateRIS = (ds: BackendDataset): string => {
     const lines: string[] = [];
     lines.push('TY  - DATA');
     lines.push(`TI  - ${sanitize(ds.title)}`);
-    ds.creators.forEach(c => lines.push(`AU  - ${c}`));
+    ds.creators?.forEach(c => lines.push(`AU  - ${c}`));
     if (year !== 'n.d.') lines.push(`PY  - ${year}`);
     if (datePart) lines.push(`DA  - ${datePart}`);
     if (doi) lines.push(`DO  - ${doi}`);
@@ -83,7 +84,7 @@ export const generateEndNote = (ds: BackendDataset): string => {
     const lines: string[] = [];
     lines.push('%0 Dataset');
     lines.push(`%T ${sanitize(ds.title)}`);
-    ds.creators.forEach(c => lines.push(`%A ${c}`));
+    ds.creators?.forEach(c => lines.push(`%A ${c}`));
     if (year !== 'n.d.') lines.push(`%D ${year}`);
     if (doi) lines.push(`%R ${doi}`);
     lines.push(`%U ${ds.url}`);
@@ -95,7 +96,7 @@ export const generateCSLJSON = (ds: BackendDataset): string => {
     const year = extractYear(ds.publication_date);
     const date = new Date(ds.publication_date);
     const dateParts = isNaN(date.getTime()) ? undefined : [[date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()]];
-    const authors = ds.creators.map(name => ({ literal: name.trim() })).filter(a => a.literal.length);
+    const authors = ds.creators?.map(name => ({ literal: name.trim() })).filter(a => a.literal.length);
     const obj: Record<string, unknown> = {
         type: 'dataset',
         id: ds.id,
@@ -119,7 +120,7 @@ export const generateRefWorks = (ds: BackendDataset): string => {
     const lines: string[] = [];
     lines.push('RT Dataset');
     lines.push('SR Electronic');
-    ds.creators.forEach(c => lines.push(`A1 ${c}`));
+    ds.creators?.forEach(c => lines.push(`A1 ${c}`));
     lines.push(`T1 ${ds.title}`);
     if (year !== 'n.d.') lines.push(`YR ${year}`);
     if (ds.keywords) ds.keywords.slice(0, 15).forEach(kw => lines.push(`K1 ${kw}`));
