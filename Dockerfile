@@ -15,17 +15,6 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine AS runtime
-
-# Copy built assets from build stage
-COPY --from=build /app/dist/spa /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Create a minimal image with just the build artifacts
+FROM alpine:latest
+COPY --from=build /app/dist/spa /webapp
