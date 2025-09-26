@@ -36,7 +36,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
             </p>
 
             <div className="space-y-2 mb-4">
-                {hit.creators.length > 0 && (
+                {hit.creators?.length > 0 && (
                     <div className="flex items-center space-x-2">
                         <UserIcon className="h-4 w-4 text-gray-500"/>
                         <span className="text-sm text-gray-600">

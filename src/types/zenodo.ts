@@ -1,6 +1,6 @@
 // Backend API types
 export interface BackendDataset {
-    creators: string[];
+    creators?: string[];
     description: string;
     id: string;
     keywords: string[] | null;
