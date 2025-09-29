@@ -25,3 +25,4 @@ dist-ssr
 /keys.env
 /builder.config.json
 /tsconfig.tsbuildinfo
+/.env
