@@ -2,7 +2,7 @@ import {BackendSearchResponse} from '../types/zenodo';
 import {logError} from './utils.ts';
 
 // --- API HELPERS ---
-export const BACKEND_API_URL = '/api';
+export const BACKEND_API_URL = '';
 
 export interface SearchRequest {
     messages: Array<{
@@ -24,7 +24,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
     };
 
     try {
-        const response = await fetch(`${BACKEND_API_URL}/search`, {
+        const response = await fetch(`${BACKEND_API_URL}/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
