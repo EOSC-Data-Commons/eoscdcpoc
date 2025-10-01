@@ -2,7 +2,7 @@ import {FaLinkedin} from 'react-icons/fa';
 import {FaBluesky} from 'react-icons/fa6';
 import {MdEmail} from 'react-icons/md';
 import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
-import { version } from '../../package.json';
+import {version} from '../../package.json';
 
 interface FooterProps {
     translucent?: boolean;

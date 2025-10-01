@@ -64,7 +64,7 @@ export const SearchPage = () => {
                         onClick={() => navigate('/')}
                     />
                     <div className="pl-16 sm:pl-20 lg:pl-24 py-3">
-                        <SearchInput onSearch={handleSearch} initialQuery={query} />
+                        <SearchInput onSearch={handleSearch} initialQuery={query}/>
                     </div>
                 </div>
             </header>

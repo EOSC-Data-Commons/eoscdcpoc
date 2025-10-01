@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { ChevronDown } from 'lucide-react';
+import {useState, useEffect, useRef} from 'react';
+import {ChevronDown} from 'lucide-react';
 
 interface ModelSelectorProps {
     models: string[];
@@ -17,7 +17,7 @@ const getShortName = (model: string) => {
     return modelName;
 };
 
-export const ModelSelector = ({ models, selectedModel, onModelChange }: ModelSelectorProps) => {
+export const ModelSelector = ({models, selectedModel, onModelChange}: ModelSelectorProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const selectorRef = useRef<HTMLDivElement>(null);
 
@@ -47,10 +47,12 @@ export const ModelSelector = ({ models, selectedModel, onModelChange }: ModelSel
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span>{getShortName(selectedModel)}</span>
-                <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
+                <ChevronDown
+                    className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}/>
             </button>
             {isOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-eosc-border max-h-60 overflow-auto">
+                <div
+                    className="absolute z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-eosc-border max-h-60 overflow-auto">
                     <ul className="py-1">
                         {models.map((model) => (
                             <li
