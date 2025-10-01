@@ -18,6 +18,7 @@ export const SearchPage = () => {
     const [error, setError] = useState<string | null>(null);
 
     const query = searchParams.get('q') || '';
+    const model = searchParams.get('model') || 'mistralai/mistral-large-latest';
 
     const performSearch = useCallback(async () => {
         if (!query) {
@@ -29,7 +30,7 @@ export const SearchPage = () => {
         setError(null);
 
         try {
-            const data = await searchWithBackend(query);
+            const data = await searchWithBackend(query, model);
             setResults(data);
             addToSearchHistory(query);
         } catch (err) {
@@ -38,14 +39,14 @@ export const SearchPage = () => {
         } finally {
             setLoading(false);
         }
-    }, [query, navigate]);
+    }, [query, model, navigate]);
 
     useEffect(() => {
         performSearch();
     }, [performSearch]);
 
-    const handleSearch = (newQuery: string) => {
-        setSearchParams({q: newQuery});
+    const handleSearch = (newQuery: string, newModel: string) => {
+        setSearchParams({q: newQuery, model: newModel});
     };
 
     const datasets = results?.hits || [];
@@ -63,7 +64,7 @@ export const SearchPage = () => {
                         onClick={() => navigate('/')}
                     />
                     <div className="pl-16 sm:pl-20 lg:pl-24 py-3">
-                        <SearchInput onSearch={handleSearch} initialQuery={query}/>
+                        <SearchInput onSearch={handleSearch} initialQuery={query} />
                     </div>
                 </div>
             </header>

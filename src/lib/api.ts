@@ -12,7 +12,7 @@ export interface SearchRequest {
     model: string;
 }
 
-export const searchWithBackend = async (query: string): Promise<BackendSearchResponse> => {
+export const searchWithBackend = async (query: string, model: string = 'mistralai/mistral-large-latest'): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
         messages: [
             {
@@ -20,7 +20,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
                 content: query
             }
         ],
-        model: 'mistralai/mistral-large-latest'
+        model: model
     };
 
     try {
