@@ -13,6 +13,7 @@ const models = [
 
 interface SearchInputProps {
     initialQuery?: string;
+    initialModel?: string;
     onSearch: (query: string, model: string) => void;
     loading?: boolean;
     placeholder?: string;
@@ -24,10 +25,11 @@ export const SearchInput = ({
                                 onSearch,
                                 loading = false,
                                 placeholder = "Search for data... e.g., 'climate data for the last decade'",
-                                className = ""
+                                className = "",
+                                initialModel
                             }: SearchInputProps) => {
     const [query, setQuery] = useState(initialQuery);
-    const [selectedModel, setSelectedModel] = useState(models[1]);
+    const [selectedModel, setSelectedModel] = useState(initialModel || models[1]);
     useNavigate();
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
