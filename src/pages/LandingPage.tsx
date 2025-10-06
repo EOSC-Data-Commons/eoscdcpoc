@@ -8,8 +8,8 @@ import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
 export const LandingPage = () => {
     const navigate = useNavigate();
 
-    const handleSearch = (query: string) => {
-        navigate(`/search?q=${encodeURIComponent(query)}`);
+    const handleSearch = (query: string, model: string) => {
+        navigate(`/search?q=${encodeURIComponent(query)}&model=${encodeURIComponent(model)}`);
     };
 
     const handleAbout = () => {
@@ -98,7 +98,7 @@ export const LandingPage = () => {
                                 {dataCards.map((card, index) => (
                                     <div
                                         key={index}
-                                        onClick={() => handleSearch(card)}
+                                        onClick={() => handleSearch(card, "mistralai/mistral-large-latest")}
                                         className="bg-white border border-eosc-border rounded-xl p-6 min-h-[75px] flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-eosc-light-blue transition-colors"
                                     >
                                         <p className="text-sm font-light text-black text-center">

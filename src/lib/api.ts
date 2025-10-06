@@ -2,7 +2,7 @@ import {BackendSearchResponse} from '../types/zenodo';
 import {logError} from './utils.ts';
 
 // --- API HELPERS ---
-export const BACKEND_API_URL = '';
+export const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || '';
 
 export interface SearchRequest {
     messages: Array<{
@@ -12,7 +12,7 @@ export interface SearchRequest {
     model: string;
 }
 
-export const searchWithBackend = async (query: string): Promise<BackendSearchResponse> => {
+export const searchWithBackend = async (query: string, model: string = 'mistralai/mistral-large-latest'): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
         messages: [
             {
@@ -20,7 +20,7 @@ export const searchWithBackend = async (query: string): Promise<BackendSearchRes
                 content: query
             }
         ],
-        model: 'mistralai/mistral-large-latest'
+        model: model
     };
 
     try {

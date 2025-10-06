@@ -2,6 +2,7 @@ import {FaLinkedin} from 'react-icons/fa';
 import {FaBluesky} from 'react-icons/fa6';
 import {MdEmail} from 'react-icons/md';
 import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
+import {version} from '../../package.json';
 
 interface FooterProps {
     translucent?: boolean;
@@ -72,6 +73,9 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <p className="text-sm font-light text-eosc-gray text-center">
                         Made with ❤️ in Europe 🇪🇺
+                    </p>
+                    <p className="text-xs font-light text-eosc-gray text-center mt-1">
+                        v{version}
                     </p>
                 </div>
             </div>
