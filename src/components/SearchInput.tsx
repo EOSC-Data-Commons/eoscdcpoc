@@ -1,8 +1,9 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {SHOW_MODEL_SELECTOR} from "../lib/config";
 import {ModelSelector} from "./ModelSelector.tsx";
 
+
+const SHOW_MODEL_SELECTOR = import.meta.env.VITE_SHOW_MODEL_SELECTOR === 'true';
 
 const models = [
     "openai/gpt-4.1",
