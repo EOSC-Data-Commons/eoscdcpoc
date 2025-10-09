@@ -23,16 +23,16 @@ const formatAuthorsBibTeX = (creators: string[]) => {
     return creators?.map(c => c.replace(/\s+/g, ' ').trim()).join(" and ");
 };
 
-const extractDOI = (zenodo_url: string): string | undefined => {
+const extractDOI = (url: string): string | undefined => {
     try {
-        const u = new URL(zenodo_url);
+        const u = new URL(url);
         if (u.hostname.includes('doi.org')) {
             return decodeURIComponent(u.pathname.replace(/^\//, ''));
         }
     } catch (err) {
         // Non-DOI or malformed URL; safe to ignore. Log in dev for diagnostics.
         if (typeof console !== 'undefined') {
-            console.debug('extractDOI: unable to parse DOI from URL', zenodo_url, err);
+            console.debug('extractDOI: unable to parse DOI from URL', url, err);
         }
     }
     return undefined;
@@ -47,7 +47,7 @@ export const generateBibTeX = (ds: BackendDataset): string => {
         title: sanitize(ds.title),
         author: authors || undefined,
         year: year !== 'n.d.' ? year : undefined,
-        zenodo_url: ds.url,
+        url: ds.url,
         note: `Accessed: ${new Date().toISOString().split('T')[0]}`,
         doi
     };
