@@ -1,4 +1,4 @@
-import type {BackendDataset} from "../types/zenodo.ts";
+import type {BackendDataset} from "../types/commons.ts";
 import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';

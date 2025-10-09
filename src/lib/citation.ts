@@ -1,4 +1,4 @@
-import type { BackendDataset } from "../types/zenodo";
+import type { BackendDataset } from "../types/commons";
 
 const sanitize = (value: string) => value.replace(/[{}]/g, "");
 

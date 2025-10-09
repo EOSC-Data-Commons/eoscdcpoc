@@ -1,5 +1,5 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import type {BackendSearchResponse} from "../types/zenodo.ts";
+import type {BackendSearchResponse} from "../types/commons.ts";
 import {useCallback, useEffect, useState} from "react";
 import {searchWithBackend} from "../lib/api.ts";
 import {addToSearchHistory} from "../lib/history.ts";

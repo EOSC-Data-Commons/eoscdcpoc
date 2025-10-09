@@ -1,4 +1,4 @@
-const SEARCH_HISTORY_KEY = 'zenodoSearchHistory';
+const SEARCH_HISTORY_KEY = 'searchHistory';
 
 export const getSearchHistory = (): string[] => {
     try {

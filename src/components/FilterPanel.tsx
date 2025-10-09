@@ -1,5 +1,5 @@
 import {FilterSection} from "./FilterSection.tsx";
-import type {Aggregations} from "../types/zenodo";
+import type {Aggregations} from "../types/commons";
 
 
 interface FilterPanelProps {
@@ -22,8 +22,8 @@ export const FilterPanel = ({aggregations, onFilterChange, activeFilters}: Filte
         }
         onFilterChange(newParams);
     };
-    // Zenodo uses 'type' for resource_type filters.
-    const getActiveFiltersFor = (key: string) => activeFilters.getAll(key === 'resource_type' ? 'type' : key);
+
+    const getActiveFiltersFor = (key: string) => activeFilters.getAll(key);
 
     return (
         <aside className="w-full lg:w-1/4 lg:pr-8">
