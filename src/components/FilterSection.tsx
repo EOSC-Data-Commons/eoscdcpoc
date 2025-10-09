@@ -1,6 +1,6 @@
 import {ChevronDownIcon} from "lucide-react";
 import {useState} from "react";
-import type {AggregationBucket} from "../types/zenodo";
+import type {AggregationBucket} from "../types/commons";
 
 interface FilterSectionProps {
     title: string;

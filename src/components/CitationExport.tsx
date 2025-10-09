@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import type { BackendDataset } from '../types/zenodo';
+import type { BackendDataset } from '../types/commons';
 import { generateBibTeX, generateRIS, generateEndNote, generateCSLJSON, generateRefWorks } from '../lib/citation';
 import { BookOpenIcon, ClipboardIcon, CheckIcon, DownloadIcon } from 'lucide-react';
 

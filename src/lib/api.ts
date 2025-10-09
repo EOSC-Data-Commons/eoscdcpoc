@@ -1,4 +1,4 @@
-import {BackendSearchResponse} from '../types/zenodo';
+import {BackendSearchResponse} from '../types/commons';
 import {logError} from './utils.ts';
 
 // --- API HELPERS ---
@@ -43,6 +43,3 @@ export const searchWithBackend = async (query: string, model: string = 'mistrala
         throw error;
     }
 };
-
-// --- API & HISTORY HELPERS ---
-export const ZENODO_API_URL = 'https://zenodo.org/api/records';
