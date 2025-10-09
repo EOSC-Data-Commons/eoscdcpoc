@@ -14,7 +14,7 @@ export const addToSearchHistory = (query: string) => {
     if (!query) return;
     try {
         const history = getSearchHistory();
-        const updatedHistory = [query, ...history.filter(item => item !== query)].slice(0, 10); // Keep latest 10
+        const updatedHistory = [query, ...history.filter(item => item !== query)].slice(0, 5); // Keep latest 5
         localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updatedHistory));
     } catch (error) {
         console.error("Failed to save search history:", error);
