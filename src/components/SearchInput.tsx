@@ -86,7 +86,7 @@ export const SearchInput = ({
                         onKeyPress={handleKeyPress}
                         onFocus={() => setShowHistory(true)}
                         placeholder={placeholder}
-                        className="truncate w-full h-16 px-4 pr-64 text-lg text-eosc-gray font-light rounded-xl border-2 border-eosc-border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-eosc-light-blue focus:border-eosc-light-blue"
+                        className={`truncate w-full h-16 px-4 text-lg text-eosc-gray font-light rounded-xl border-2 border-eosc-border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-eosc-light-blue focus:border-eosc-light-blue ${SHOW_MODEL_SELECTOR ? 'pr-64' : 'pr-32'}`}
                     />
                     {showHistory && filteredHistory.length > 0 && (
                         <div
