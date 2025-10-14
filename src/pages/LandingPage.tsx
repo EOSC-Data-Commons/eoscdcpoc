@@ -69,7 +69,7 @@ export const LandingPage = () => {
                     {/* Subtitle */}
                     <div className="text-center mb-8">
                         <p className="text-2xl font-light text-eosc-gray max-w-2xl mx-auto px-4">
-                            Search through millions of high quality scientific datasets using natural language
+                            Easily find high quality scientific datasets and deploy on tools using natural language
                         </p>
                     </div>
 
