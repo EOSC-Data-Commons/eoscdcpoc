@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.1.0] - 17-10-2025
-- Project initial release.
-
-
+- Improved search experience with keyboard navigation and history dropdown.
+- Dismissed disclaimers now stay hidden for your session.
+- Updated landing page subtitle for clarity.
+- Publication dates now use a consistent format.
+- App version is now visible in the footer with a link to the changelog.
+- Upgraded core technologies for better performance and stability.
+- Various minor fixes and enhancements.
