@@ -1,0 +1,30 @@
+name: Check Changelog Update
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get base branch CHANGELOG.md
+        run: |
+          git fetch origin main
+          git checkout origin/main -- CHANGELOG.md || touch CHANGELOG.base.md
+          mv CHANGELOG.md CHANGELOG.base.md
+      - name: Compare CHANGELOG.md
+        run: |
+          if ! git diff --no-index --quiet CHANGELOG.base.md CHANGELOG.md; then
+            echo "Changelog updated."
+          else
+            echo "Changelog not updated! Please update CHANGELOG.md."
+            exit 1
+          fi
+        shell: bash
+
