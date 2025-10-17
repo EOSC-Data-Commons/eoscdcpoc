@@ -12,7 +12,7 @@ export interface SearchRequest {
     model: string;
 }
 
-export const searchWithBackend = async (query: string, model: string = 'mistralai/mistral-large-latest'): Promise<BackendSearchResponse> => {
+export const searchWithBackend = async (query: string, model: string = 'einfracz/qwen3-coder'): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
         messages: [
             {

@@ -18,7 +18,7 @@ export const SearchPage = () => {
     const [error, setError] = useState<string | null>(null);
 
     const query = searchParams.get('q') || '';
-    const model = searchParams.get('model') || 'mistralai/mistral-large-latest';
+    const model = searchParams.get('model') || 'einfracz/qwen3-coder';
 
     const performSearch = useCallback(async () => {
         if (!query) {
@@ -64,7 +64,7 @@ export const SearchPage = () => {
                         onClick={() => navigate('/')}
                     />
                     <div className="pl-16 sm:pl-20 lg:pl-24 py-3">
-                        <SearchInput onSearch={handleSearch} initialQuery={query} initialModel={model} />
+                        <SearchInput onSearch={handleSearch} initialQuery={query} initialModel={model}/>
                     </div>
                 </div>
             </header>

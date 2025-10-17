@@ -31,15 +31,13 @@ export const SearchInput = ({
                                 initialModel
                             }: SearchInputProps) => {
     const [query, setQuery] = useState(initialQuery);
-    const [selectedModel, setSelectedModel] = useState(initialModel || models[1]);
+    const [selectedModel, setSelectedModel] = useState(initialModel || models[3]);
     const [showHistory, setShowHistory] = useState(false);
-    const [history, setHistory] = useState<string[]>([]);
+    const [history] = useState<string[]>(getSearchHistory);
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const searchContainerRef = useRef<HTMLDivElement>(null);
     useNavigate();
 
-    useEffect(() => {
-        setHistory(getSearchHistory());
-    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -61,9 +59,26 @@ export const SearchInput = ({
             setShowHistory(false);
         }
     };
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            handleSearch(e);
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (showHistory && filteredHistory.length > 0) {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setHighlightedIndex(prevIndex =>
+                    prevIndex < filteredHistory.length - 1 ? prevIndex + 1 : prevIndex
+                );
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setHighlightedIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : 0));
+            } else if (e.key === 'Enter') {
+                if (highlightedIndex > -1) {
+                    e.preventDefault();
+                    handleHistoryItemClick(filteredHistory[highlightedIndex]);
+                } else {
+                    handleSearch(e as unknown as React.FormEvent);
+                }
+            }
+        } else if (e.key === 'Enter') {
+            handleSearch(e as unknown as React.FormEvent);
         }
     };
 
@@ -71,6 +86,7 @@ export const SearchInput = ({
         setQuery(item);
         onSearch(item, selectedModel);
         setShowHistory(false);
+        setHighlightedIndex(-1);
     };
 
     const filteredHistory = history.filter(item => item.toLowerCase().includes(query.toLowerCase()));
@@ -83,7 +99,7 @@ export const SearchInput = ({
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyDown}
                         onFocus={() => setShowHistory(true)}
                         placeholder={placeholder}
                         className={`truncate w-full h-16 px-4 text-lg text-eosc-gray font-light rounded-xl border-2 border-eosc-border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-eosc-light-blue focus:border-eosc-light-blue ${SHOW_MODEL_SELECTOR ? 'pr-64' : 'pr-32'}`}
@@ -95,9 +111,10 @@ export const SearchInput = ({
                                 {filteredHistory.map((item, index) => (
                                     <li
                                         key={index}
-                                        className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                        className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${highlightedIndex === index ? 'bg-gray-100' : ''}`}
                                         style={{color: '#681da8'}}
                                         onClick={() => handleHistoryItemClick(item)}
+                                        onMouseEnter={() => setHighlightedIndex(index)}
                                     >
                                         {item}
                                     </li>

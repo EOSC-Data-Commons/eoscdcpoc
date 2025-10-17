@@ -62,7 +62,15 @@ export const AlphaDisclaimer = () => {
     const [mounted, setMounted] = useState(true);  // controls actual render removal after exit
     const [animReady, setAnimReady] = useState(false); // ensures initial off-screen state applied before animating in
     const [countdown, setCountdown] = useState(8);
+    const [dismissed, setDismissed] = useState(false);
 
+
+    useEffect(() => {
+        const stored = sessionStorage.getItem('alphaDisclaimerDismissed');
+        if (stored) {
+            setDismissed(true);
+        }
+    }, []);
 
     useLayoutEffect(() => {
         setAnimReady(true);
@@ -76,6 +84,8 @@ export const AlphaDisclaimer = () => {
 
     const handleClose = () => {
         setVisible(false);
+        sessionStorage.setItem('alphaDisclaimerDismissed', 'true');
+        setDismissed(true);
     };
 
     useEffect(() => {
@@ -103,7 +113,7 @@ export const AlphaDisclaimer = () => {
         }
     };
 
-    if (!mounted) return null;
+    if (!mounted || dismissed) return null;
 
     const stateClasses = visible
         ? 'translate-x-0 opacity-100 pointer-events-auto'
