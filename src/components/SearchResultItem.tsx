@@ -49,7 +49,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                 <div className="flex items-center space-x-2">
                     <CalendarIcon className="h-4 w-4 text-gray-500"/>
                     <span className="text-sm text-gray-600">
-                        Published: {new Date(hit.publication_date).toLocaleDateString()}
+                        {new Date(hit.publication_date).toISOString().slice(0, 10).replace(/-/g, '.')}
                     </span>
                 </div>
 
@@ -81,7 +81,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                         <ExternalLinkIcon className="h-4 w-4"/>
                         <span className="leading-none">View</span>
                     </a>
-                    <CitationExport dataset={hit} />
+                    <CitationExport dataset={hit}/>
                 </div>
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
             </div>

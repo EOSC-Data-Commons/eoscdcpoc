@@ -75,7 +75,16 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
                         Made with ❤️ in Europe 🇪🇺
                     </p>
                     <p className="text-xs font-light text-eosc-gray text-center mt-1">
-                        v{version}
+                        <a
+                            href="https://github.com/EOSC-Data-Commons/eoscdcpoc/blob/main/CHANGELOG.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={"hover:text-eosc-dark-blue transition-colors"}
+                            aria-label="View Changelog"
+                            style={{ textDecoration: 'none' }}
+                        >
+                            v{version}
+                        </a>
                     </p>
                 </div>
             </div>

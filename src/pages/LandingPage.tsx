@@ -69,7 +69,7 @@ export const LandingPage = () => {
                     {/* Subtitle */}
                     <div className="text-center mb-8">
                         <p className="text-2xl font-light text-eosc-gray max-w-2xl mx-auto px-4">
-                            Search through millions of high quality scientific datasets using natural language
+                            Easily find high quality scientific datasets and deploy on tools using natural language
                         </p>
                     </div>
 
@@ -98,7 +98,7 @@ export const LandingPage = () => {
                                 {dataCards.map((card, index) => (
                                     <div
                                         key={index}
-                                        onClick={() => handleSearch(card, "mistralai/mistral-large-latest")}
+                                        onClick={() => handleSearch(card, "einfracz/qwen3-coder")}
                                         className="bg-white border border-eosc-border rounded-xl p-6 min-h-[75px] flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-eosc-light-blue transition-colors"
                                     >
                                         <p className="text-sm font-light text-black text-center">
