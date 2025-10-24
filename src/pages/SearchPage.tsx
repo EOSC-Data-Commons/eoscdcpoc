@@ -30,7 +30,19 @@ export const SearchPage = () => {
         setError(null);
 
         try {
-            const data = await searchWithBackend(query, model);
+            const data = await searchWithBackend(query, model, {
+                onSearchData: (data) => {
+                    setResults(data);
+                    setLoading(false);
+                },
+                onError: (err) => {
+                    console.error("Search stream error:", err);
+                    setError(err.message);
+                },
+                // onEvent: (event) => {
+                //     console.debug('SSE Event:', event);
+                // },
+            });
             setResults(data);
             addToSearchHistory(query);
         } catch (err) {
@@ -132,7 +144,7 @@ export const SearchPage = () => {
                                         <div className="space-y-4 mb-8">
                                             {datasets.map((dataset, index) => (
                                                 <SearchResultItem
-                                                    key={`${dataset.id}-${index}`}
+                                                    key={`${dataset._id}-${index}`}
                                                     hit={dataset}
                                                 />
                                             ))}

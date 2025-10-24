@@ -36,36 +36,38 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
             </p>
 
             <div className="space-y-2 mb-4">
-                {hit.creators?.length > 0 && (
+                {hit._source.creators?.length > 0 && (
                     <div className="flex items-center space-x-2">
                         <UserIcon className="h-4 w-4 text-gray-500"/>
                         <span className="text-sm text-gray-600">
-                            {hit.creators.slice(0, 3).join(', ')}
-                            {hit.creators.length > 3 && ` +${hit.creators.length - 3} more`}
+                            {hit._source.creators.map(creator => creator.creatorName).slice(0, 3).join(', ')}
+                            {hit._source.creators.length > 3 && ` +${hit._source.creators.length - 3} more`}
                         </span>
                     </div>
                 )}
 
-                <div className="flex items-center space-x-2">
-                    <CalendarIcon className="h-4 w-4 text-gray-500"/>
-                    <span className="text-sm text-gray-600">
-                        {new Date(hit.publication_date).toISOString().slice(0, 10).replace(/-/g, '.')}
-                    </span>
-                </div>
+                {hit.publicationDate &&
+                    <div className="flex items-center space-x-2">
+                        <CalendarIcon className="h-4 w-4 text-gray-500"/>
+                        <span className="text-sm text-gray-600">
+                            {new Date(hit.publicationDate).toISOString().slice(0, 10).replace(/-/g, '.')}
+                        </span>
+                    </div>
+                }
 
-                {hit.keywords && hit.keywords.length > 0 && (
+                {hit._source.subjects && hit._source.subjects.length > 0 && (
                     <div className="flex items-start space-x-2">
                         <TagIcon className="h-4 w-4 text-gray-500 mt-0.5"/>
                         <div className="flex flex-wrap gap-1">
-                            {hit.keywords.slice(0, 5).map((keyword, index) => (
+                            {hit._source.subjects.slice(0, 5).map((subj, index) => (
                                 <span key={index}
                                       className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
-                                    {keyword}
+                                    {subj.subject}
                                 </span>
                             ))}
-                            {hit.keywords.length > 5 && (
+                            {hit._source.subjects.length > 5 && (
                                 <span className="text-xs text-gray-500">
-                                    +{hit.keywords.length - 5} more
+                                    +{hit._source.subjects.length - 5} more
                                 </span>
                             )}
                         </div>
@@ -76,7 +78,7 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
             <div
                 className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-gray-100 gap-4 sm:gap-0">
                 <div className="flex space-x-4">
-                    <a href={hit.url} target="_blank" rel="noopener noreferrer"
+                    <a href={hit._id} target="_blank" rel="noopener noreferrer"
                        aria-label={`View dataset ${hit.title}`}
                        className="inline-flex items-center justify-center gap-1 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-colors">
                         <ExternalLinkIcon className="h-4 w-4"/>
