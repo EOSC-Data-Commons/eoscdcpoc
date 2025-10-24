@@ -10,7 +10,8 @@ const models = [
     "openai/gpt-4.1",
     "mistralai/mistral-large-latest",
     "groq/moonshotai/kimi-k2-instruct",
-    "einfracz/qwen3-coder"
+    "einfracz/qwen3-coder",
+    "einfracz/gpt-oss-120b",
 ];
 
 interface SearchInputProps {
