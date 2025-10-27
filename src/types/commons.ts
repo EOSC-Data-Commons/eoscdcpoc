@@ -1,14 +1,55 @@
-// Backend API types
-export interface BackendDataset {
-    creators?: string[];
-    description: string;
-    id: string;
-    keywords: string[] | null;
-    publication_date: string;
-    resource_type: string;
-    score: number;
+// Backend API types - matching Python SearchHit structure
+
+export interface SearchHitSrcCreator {
+    creatorName: string;
+}
+
+export interface SearchHitSrcSubject {
+    subject: string;
+    lang?: string | null;
+    subject_scheme?: string | null;
+    schemaUri?: string | null;
+    valueUri?: string | null;
+    classificationCode?: string | null;
+}
+
+export interface SearchHitSrcTitle {
     title: string;
-    url: string;
+}
+
+export interface SearchHitSrcDescription {
+    description: string;
+    lang?: string | null;
+    descriptionType?: string | null;
+}
+
+export interface SearchHitSrcDate {
+    date: string;
+    dateType: string;
+}
+
+export interface SearchHitSrc {
+    doi?: string | null;
+    url?: string | null;
+    titles: SearchHitSrcTitle[];
+    descriptions: SearchHitSrcDescription[];
+    publicationYear: string;
+    dates?: SearchHitSrcDate[] | null;
+    subjects?: SearchHitSrcSubject[] | null;
+    creators?: SearchHitSrcCreator[] | null;
+    resourceType?: string;
+}
+
+export interface BackendDataset {
+    _id: string;
+    _source: SearchHitSrc;
+    opensearch_score: number;
+    score?: number | null;
+    file_extensions?: string[] | null;
+    title?: string | null;
+    description?: string | null;
+    publicationDate?: string | null;
+    creator?: string | null;
 }
 
 export interface BackendSearchResponse {
