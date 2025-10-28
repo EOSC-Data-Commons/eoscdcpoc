@@ -16,7 +16,7 @@ export default function App() {
         const matomoUrl = import.meta.env.VITE_MATOMO_CONTAINER_URL;
 
         if (!matomoUrl) {
-            console.warn('MATOMO_CONTAINER_URL is not defined in environment variables');
+            console.warn('VITE_MATOMO_CONTAINER_URL is not defined in environment variables');
             return;
         }
 
