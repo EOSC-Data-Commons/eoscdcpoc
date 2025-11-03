@@ -29,7 +29,7 @@ export interface SSEEventHandler {
 
 export const searchWithBackend = async (
     query: string,
-    model: string = 'einfracz/qwen3-coder',
+    model: string = 'einfracz/gpt-oss-120b',
     handlers: SSEEventHandler
 ): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
