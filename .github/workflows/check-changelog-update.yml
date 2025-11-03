@@ -13,17 +13,23 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get base branch CHANGELOG.md
+      - name: Save PR CHANGELOG.md and get base branch version
         run: |
+          # Save the PR's current CHANGELOG.md
+          cp CHANGELOG.md CHANGELOG.pr.md
+          # Fetch and checkout the base branch version
           git fetch origin main
-          git checkout origin/main -- CHANGELOG.md || touch CHANGELOG.base.md
+          git checkout origin/main -- CHANGELOG.md
           mv CHANGELOG.md CHANGELOG.base.md
+          # Restore the PR's version
+          mv CHANGELOG.pr.md CHANGELOG.md
       - name: Compare CHANGELOG.md
         run: |
-          if ! git diff --no-index --quiet CHANGELOG.base.md CHANGELOG.md; then
-            echo "Changelog updated."
+          if ! diff -q CHANGELOG.base.md CHANGELOG.md > /dev/null 2>&1; then
+            echo "✅ Changelog has been updated."
+            exit 0
           else
-            echo "Changelog not updated! Please update CHANGELOG.md."
+            echo "❌ Changelog not updated! Please update CHANGELOG.md."
             exit 1
           fi
         shell: bash

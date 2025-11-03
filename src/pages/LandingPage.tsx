@@ -19,7 +19,7 @@ export const LandingPage = () => {
     const dataCards = [
         "Glucose level changes in the liver of individuals with type 1 diabetes from 1980 to 2020",
         "Data about CO2 levels in europe between 1960 and 2020",
-        "Evolution of Japanese population since the 80s"
+        "Water quality Adriatic beaches Croatia 2015-2024"
     ];
 
     const toolCards = [
@@ -37,28 +37,25 @@ export const LandingPage = () => {
 
 
     return (
-        <div className="min-h-screen bg-eosc-bg flex flex-col justify-center items-center px-4 relative">
+        <div className="min-h-screen bg-eosc-bg flex flex-col items-center px-4 relative">
             <AlphaDisclaimer/>
-            {/* EOSC Icon - Fixed in top left */}
-            <img
-                src={dataCommonsIconBlue}
-                alt="EOSC"
-                className="absolute top-6 left-6 w-16 h-9 z-10"
-            />
+            <header className="w-full flex justify-between items-center p-4 sm:p-6">
+                <img
+                    src={dataCommonsIconBlue}
+                    alt="EOSC"
+                    className="w-16 h-9"
+                />
+                <button
+                    onClick={handleAbout}
+                    className="bg-white border border-eosc-border rounded-lg px-4 py-2 text-sm font-light text-eosc-text hover:bg-gray-50 hover:border-eosc-light-blue transition-colors cursor-pointer"
+                >
+                    About
+                </button>
+            </header>
 
-            {/* About Button - Fixed in top right */}
-            <button
-                onClick={handleAbout}
-                className="absolute top-6 right-6 bg-white border border-eosc-border rounded-lg px-4 py-2 text-sm font-light text-eosc-text hover:bg-gray-50 hover:border-eosc-light-blue transition-colors cursor-pointer z-10"
-            >
-                About
-            </button>
-
-            <div className="w-full max-w-7xl mx-auto">
-                {/* Header with Logo */}
-                <div className="pt-6 pb-8">
-                    {/* Main Logo */}
-                    <div className="flex justify-center mt-16 mb-8">
+            <div className="w-full max-w-7xl mx-auto flex-grow flex flex-col justify-center">
+                <div className="pt-6 pb-8 px-4 sm:px-0">
+                    <div className="flex justify-center mt-8 sm:mt-16 mb-8">
                         <img
                             src={eoscLogo}
                             alt="EOSC Data Commons"
@@ -68,7 +65,7 @@ export const LandingPage = () => {
 
                     {/* Subtitle */}
                     <div className="text-center mb-8">
-                        <p className="text-2xl font-light text-eosc-gray max-w-2xl mx-auto px-4">
+                        <p className="text-xl sm:text-2xl font-light text-eosc-gray max-w-2xl mx-auto px-4">
                             Easily find high quality scientific datasets and deploy on tools using natural language
                         </p>
                     </div>
@@ -84,14 +81,14 @@ export const LandingPage = () => {
 
                 {/* What can you discover section */}
                 <div className="py-12">
-                    <h2 className="text-3xl font-light text-eosc-text text-center mb-12">
+                    <h2 className="text-2xl sm:text-3xl font-light text-eosc-text text-center mb-12">
                         What can you discover?
                     </h2>
 
                     <div className="max-w-7xl mx-auto px-4">
                         {/* Data Section */}
                         <div className="mb-12">
-                            <h3 className="text-3xl font-light text-eosc-text text-left mb-8 ml-4">
+                            <h3 className="text-2xl sm:text-3xl font-light text-eosc-text text-left mb-8 ml-4">
                                 Data
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -111,7 +108,7 @@ export const LandingPage = () => {
 
                         {/* Tools Section */}
                         <div className="mb-12">
-                            <h3 className="text-3xl font-light text-eosc-text text-left mb-8 ml-4">
+                            <h3 className="text-2xl sm:text-3xl font-light text-eosc-text text-left mb-8 ml-4">
                                 Tools
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -135,8 +132,8 @@ export const LandingPage = () => {
                                     <div key={index} className="flex items-center gap-3">
                                         <div className="w-2 h-2 bg-eosc-dark-blue rounded-full"></div>
                                         <span className="text-base font-light text-eosc-gray">
-                                    • {feature}
-                                </span>
+                                           • {feature}
+                                        </span>
                                     </div>
                                 ))}
                             </div>

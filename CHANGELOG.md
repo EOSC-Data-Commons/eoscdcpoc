@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 03-11-2025
+
+- Added Matomo analytics tracking for page views and route changes.
+- Improved UI throughout the website for better responsiveness and visual clarity.
+- Upgraded Vite to version 7.1.12.
+- Improved changelog update check workflow in CI.
+
 ## [0.1.0] - 17-10-2025
 - Improved search experience with keyboard navigation and history dropdown.
 - Dismissed disclaimers now stay hidden for your session.

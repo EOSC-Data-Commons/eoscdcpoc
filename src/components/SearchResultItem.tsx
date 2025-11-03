@@ -19,11 +19,11 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start mb-3">
+                <h3 className="text-lg font-semibold text-gray-900 pr-4 mb-2 sm:mb-0">
                     {hit.title}
                 </h3>
-                <div className="flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
+                <div className="flex-shrink-0 flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
                     <ProportionalStar percent={scorePercent} className="h-4 w-4"/>
                     <span className="text-sm font-medium text-yellow-700">
                         {scorePercent.toFixed(0)}%
@@ -73,7 +73,8 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                 )}
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div
+                className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-gray-100 gap-4 sm:gap-0">
                 <div className="flex space-x-4">
                     <a href={hit.url} target="_blank" rel="noopener noreferrer"
                        aria-label={`View dataset ${hit.title}`}

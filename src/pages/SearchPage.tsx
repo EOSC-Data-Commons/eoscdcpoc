@@ -56,14 +56,14 @@ export const SearchPage = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
             <AlphaDisclaimer/>
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md shadow-sm">
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-3">
                     <img
                         src={dataCommonsIconBlue}
                         alt="EOSC Logo"
-                        className="absolute left-4 sm:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 h-9 w-auto cursor-pointer"
+                        className="h-9 w-auto cursor-pointer"
                         onClick={() => navigate('/')}
                     />
-                    <div className="pl-16 sm:pl-20 lg:pl-24 py-3">
+                    <div className="flex-grow ml-4">
                         <SearchInput onSearch={handleSearch} initialQuery={query} initialModel={model}/>
                     </div>
                 </div>
