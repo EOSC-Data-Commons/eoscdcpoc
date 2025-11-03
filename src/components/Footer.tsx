@@ -16,76 +16,81 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
 
     return (
         <footer className={fullClass}>
-            <div className="flex justify-end items-center px-10 w-full">
-                {/* Right: Logo and Social Links */}
-                <div className="flex flex-col items-end gap-2">
-                    <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href="http://www.eosc-data-commons.eu"
-                        aria-label="Link to Homepage"
-                        className="cursor-pointer mb-2"
-                    >
-                        <div className="w-64">
-                            <div className="w-full h-16 flex items-center justify-center text-sm">
-                                <img
-                                    src={eoscLogo}
-                                    alt="EOSC Data Commons"
-                                    className="w-full max-w-lg h-auto"
-                                />
-                            </div>
-                        </div>
-                    </a>
-                    <div className="flex items-center gap-4">
-                        <a
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="linkedin"
-                            title="LinkedIn Profile"
-                            href="https://www.linkedin.com/company/eosc-data-commons/"
-                            className="cursor-pointer hover:opacity-80 transition-opacity"
-                        >
-                            <FaLinkedin size={24} className="text-eosc-dark-blue"/>
-                        </a>
-                        <a
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="bluesky"
-                            title="Bluesky Profile"
-                            href="https://bsky.app/profile/eosc-data-commons.bsky.social"
-                            className="cursor-pointer hover:opacity-80 transition-opacity"
-                        >
-                            <FaBluesky size={24} className="text-eosc-dark-blue"/>
-                        </a>
-                        <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href="mailto:eosc-data-commons-po@mailman.egi.eu"
-                            aria-label="Mail"
-                            title="Mail"
-                            className="cursor-pointer hover:opacity-80 transition-opacity"
-                        >
-                            <MdEmail size={24} className="text-eosc-dark-blue"/>
-                        </a>
+            <div className="px-4 sm:px-6">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div className="hidden md:block md:flex-1"></div>
+
+                    {/* Center text */}
+                    <div className="text-center md:flex-1">
+                        <p className="text-sm font-light text-eosc-gray">
+                            Made with ❤️ in Europe 🇪🇺
+                        </p>
+                        <p className="text-xs font-light text-eosc-gray mt-1">
+                            <a
+                                href="https://github.com/EOSC-Data-Commons/eoscdcpoc/blob/main/CHANGELOG.md"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={"hover:text-eosc-dark-blue transition-colors"}
+                                aria-label="View Changelog"
+                                style={{textDecoration: 'none'}}
+                            >
+                                v{version}
+                            </a>
+                        </p>
                     </div>
-                </div>
-                {/* Center text */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <p className="text-sm font-light text-eosc-gray text-center">
-                        Made with ❤️ in Europe 🇪🇺
-                    </p>
-                    <p className="text-xs font-light text-eosc-gray text-center mt-1">
+
+                    {/* Right: Logo and Social Links */}
+                    <div className="flex-1 flex flex-col items-center md:items-end gap-2">
                         <a
-                            href="https://github.com/EOSC-Data-Commons/eoscdcpoc/blob/main/CHANGELOG.md"
                             target="_blank"
-                            rel="noopener noreferrer"
-                            className={"hover:text-eosc-dark-blue transition-colors"}
-                            aria-label="View Changelog"
-                            style={{ textDecoration: 'none' }}
+                            rel="noreferrer"
+                            href="http://www.eosc-data-commons.eu"
+                            aria-label="Link to Homepage"
+                            className="cursor-pointer mb-2"
                         >
-                            v{version}
+                            <div className="w-64">
+                                <div className="w-full h-16 flex items-center justify-center text-sm">
+                                    <img
+                                        src={eoscLogo}
+                                        alt="EOSC Data Commons"
+                                        className="w-full max-w-lg h-auto"
+                                    />
+                                </div>
+                            </div>
                         </a>
-                    </p>
+                        <div className="flex items-center gap-4">
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label="linkedin"
+                                title="LinkedIn Profile"
+                                href="https://www.linkedin.com/company/eosc-data-commons/"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <FaLinkedin size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label="bluesky"
+                                title="Bluesky Profile"
+                                href="https://bsky.app/profile/eosc-data-commons.bsky.social"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <FaBluesky size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                href="mailto:eosc-data-commons-po@mailman.egi.eu"
+                                aria-label="Mail"
+                                title="Mail"
+                                className="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
+                                <MdEmail size={24} className="text-eosc-dark-blue"/>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
