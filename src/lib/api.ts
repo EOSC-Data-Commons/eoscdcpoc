@@ -23,6 +23,7 @@ export interface SSEEvent {
 
 export interface SSEEventHandler {
     onSearchData?: (data: BackendSearchResponse) => void;
+    onRerankedData?: (data: BackendSearchResponse) => void;
     onEvent?: (event: SSEEvent) => void;
     onError?: (error: Error) => void;
 }
@@ -52,10 +53,11 @@ export const searchWithBackend = async (
             if (handlers?.onEvent) handlers.onEvent(event);
             if (event.type === 'TOOL_CALL_RESULT' && event.content) {
                 const searchResp = JSON.parse(event.content) as BackendSearchResponse;
-                if (event.tool_call_id === 'rerank_results')
-                    handlers.onSearchData(searchResp);
-                else if (event.tool_call_id === 'search_data')
-                    handlers.onSearchData(searchResp);
+                if (event.tool_call_id === 'rerank_results') {
+                    if (handlers.onRerankedData) handlers.onRerankedData(searchResp);
+                } else if (event.tool_call_id === 'search_data') {
+                    if (handlers.onSearchData) handlers.onSearchData(searchResp);
+                }
                 return searchResp;
             } else if (event.type === 'error' && handlers?.onError) {
                 handlers.onError(new Error(event.content));
