@@ -67,7 +67,13 @@ export const SearchPage = () => {
     }, [query, model, navigate]);
 
     useEffect(() => {
-        performSearch();
+        void (async () => {
+            try {
+                await performSearch();
+            } catch (err) {
+                console.error("Unhandled search error:", err);
+            }
+        })();
     }, [performSearch]);
 
     const handleSearch = (newQuery: string, newModel: string) => {
