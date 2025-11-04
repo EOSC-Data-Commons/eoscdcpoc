@@ -41,7 +41,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
         <div className={`rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow ${
             isAiRanked
                 ? 'bg-white border-gray-200'
-                : 'bg-gray-50/50 border-gray-300'
+                : 'bg-gray-100 border-gray-300'
         }`}>
             <div className="flex flex-col sm:flex-row justify-between items-start mb-3">
                 <h3 className="text-lg font-semibold text-gray-900 pr-4 mb-2 sm:mb-0">
