@@ -18,24 +18,46 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
 
     const scorePercent = (hit.score || 0) * 100;
 
-    // Get publication date from publicationDate field or fallback to _source.dates
+    // For research accuracy, only use official publication dates (Issued/Created), not metadata dates
     const getPublicationDate = (): string | null => {
+        // First priority: root-level publicationDate field (if not null)
         if (hit.publicationDate) {
             return hit.publicationDate;
         }
-        // Fallback: look for a date in _source.dates with dateType "Issued" or "Created"
+
+        // Second priority: look for "Issued" date in _source.dates (official publication)
         if (hit._source.dates && hit._source.dates.length > 0) {
             const issuedDate = hit._source.dates.find(d => d.dateType === 'Issued');
             if (issuedDate) return issuedDate.date;
+
+            // Third priority: "Available" date (when it became publicly available)
+            const availableDate = hit._source.dates.find(d => d.dateType === 'Available');
+            if (availableDate) return availableDate.date;
+
+            // Fourth priority: "Created" date (when content was created)
+            // This is important for unpublished datasets - the creation date is citation-worthy
             const createdDate = hit._source.dates.find(d => d.dateType === 'Created');
             if (createdDate) return createdDate.date;
-            // If no specific type found, use the first date
-            return hit._source.dates[0].date;
         }
+
+        // Last resort: use publicationYear if available (show just the year)
+        if (hit._source.publicationYear) {
+            return hit._source.publicationYear;
+        }
+
         return null;
     };
 
     const publicationDate = getPublicationDate();
+
+    const formatDate = (dateStr: string): string => {
+        // If it's just a year (4 digits), return as-is
+        if (/^\d{4}$/.test(dateStr)) {
+            return dateStr;
+        }
+        // Otherwise format as YYYY.MM.DD
+        return new Date(dateStr).toISOString().slice(0, 10).replace(/-/g, '.');
+    };
 
     return (
         <div className={`rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow ${
@@ -72,14 +94,14 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     </div>
                 )}
 
-                {publicationDate &&
+                {publicationDate && (
                     <div className="flex items-center space-x-2">
                         <CalendarIcon className="h-4 w-4 text-gray-500"/>
                         <span className="text-sm text-gray-600">
-                            {new Date(publicationDate).toISOString().slice(0, 10).replace(/-/g, '.')}
+                            {formatDate(publicationDate)}
                         </span>
                     </div>
-                }
+                )}
 
                 {hit._source.subjects && hit._source.subjects.length > 0 && (
                     <div className="flex items-start space-x-2">
