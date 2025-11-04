@@ -18,7 +18,28 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
         <footer className={fullClass}>
             <div className="px-4 sm:px-6">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="hidden md:block md:flex-1"></div>
+                    {/* Left: e-INFRA CZ Acknowledgement */}
+                    <div className="flex-1 flex flex-col items-center md:items-start gap-2">
+                        <a
+                            href="https://www.e-infra.cz/en"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                            aria-label="e-INFRA CZ website"
+                        >
+                            <img
+                                src="https://www.e-infra.cz/img/logo.svg"
+                                alt="e-INFRA CZ"
+                                className="h-8 w-auto"
+                            />
+                        </a>
+                        <div className="text-xs font-light text-center md:text-left max-w-xs">
+                            <p className="text-[10px] text-gray-500">
+                                Computational resources provided by e-INFRA CZ (ID:90254), supported by Ministry of
+                                Education, Youth and Sports of the Czech Republic
+                            </p>
+                        </div>
+                    </div>
 
                     {/* Center text */}
                     <div className="text-center md:flex-1">
