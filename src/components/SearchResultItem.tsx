@@ -86,7 +86,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
             <div className="space-y-2 mb-4">
                 {hit._source.creators?.length > 0 && (
                     <div className="flex items-center space-x-2">
-                        <UserIcon className="h-4 w-4 text-gray-500"/>
+                        <UserIcon className="h-4 w-4 text-gray-500 flex-shrink-0"/>
                         <span className="text-sm text-gray-600">
                             {hit._source.creators.map(creator => creator.creatorName).slice(0, 3).join(', ')}
                             {hit._source.creators.length > 3 && ` +${hit._source.creators.length - 3} more`}
@@ -96,7 +96,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
 
                 {publicationDate && (
                     <div className="flex items-center space-x-2">
-                        <CalendarIcon className="h-4 w-4 text-gray-500"/>
+                        <CalendarIcon className="h-4 w-4 text-gray-500 flex-shrink-0"/>
                         <span className="text-sm text-gray-600">
                             {formatDate(publicationDate)}
                         </span>
@@ -105,7 +105,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
 
                 {hit._source.subjects && hit._source.subjects.length > 0 && (
                     <div className="flex items-start space-x-2">
-                        <TagIcon className="h-4 w-4 text-gray-500 mt-0.5"/>
+                        <TagIcon className="h-4 w-4 text-gray-500 flex-shrink-0 mt-0.5"/>
                         <div className="flex flex-wrap gap-1">
                             {hit._source.subjects.slice(0, 5).map((subj, index) => (
                                 <span key={index}
