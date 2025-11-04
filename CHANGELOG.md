@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2025-11-07
+
+- Refactored backend search to support SSE streaming and improved error handling.
+- Added new search model `einfracz/gpt-oss-120b`.
+- Redesigned footer for better responsiveness and added e-INFRA CZ acknowledgement.
+- Enhanced dataset search result rendering for accuracy and consistency.
+- Upgraded dependencies, including Vite.
+
 ## [0.1.1] - 03-11-2025
 
 - Added Matomo analytics tracking for page views and route changes.
