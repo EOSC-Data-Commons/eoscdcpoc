@@ -1,0 +1,47 @@
+name: Deploy Static Content
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vite build
+        run: npx vite build
+
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: eosc-data-commons/mcp-server-deployment # Replace with your target repository
+          path: target-repo
+          token: ${{ secrets.DEPLOY_TOKEN }} # A PAT with repo scope
+
+      - name: Deploy to target repository
+        run: |
+          rsync -av --delete --exclude='.git/' --exclude='.github/' dist/ target-repo/
+          cd target-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Deploy static content from source repository"
+            git push
+          else
+            echo "No changes to deploy."
+          fi
+        shell: bash
+
