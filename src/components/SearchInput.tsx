@@ -32,7 +32,7 @@ export const SearchInput = ({
                                 initialModel
                             }: SearchInputProps) => {
     const [query, setQuery] = useState(initialQuery);
-    const [selectedModel, setSelectedModel] = useState(initialModel || models[3]);
+    const [selectedModel, setSelectedModel] = useState(initialModel || models[4]);
     const [showHistory, setShowHistory] = useState(false);
     const [history] = useState<string[]>(getSearchHistory);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
