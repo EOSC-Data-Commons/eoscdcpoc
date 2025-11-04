@@ -3,7 +3,7 @@ import type {BackendSearchResponse} from "../types/commons.ts";
 import {useCallback, useEffect, useState} from "react";
 import {searchWithBackend} from "../lib/api.ts";
 import {addToSearchHistory} from "../lib/history.ts";
-import {BookIcon, LoaderIcon, XCircleIcon} from "lucide-react";
+import {BookIcon, LoaderIcon, XCircleIcon, ChevronDown, ChevronUp, Sparkles} from "lucide-react";
 import {SearchInput} from "../components/SearchInput.tsx";
 import {SearchResultItem} from "../components/SearchResultItem.tsx";
 import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
@@ -13,12 +13,15 @@ import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
 export const SearchPage = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [results, setResults] = useState<BackendSearchResponse | null>(null);
+    const [initialResults, setInitialResults] = useState<BackendSearchResponse | null>(null);
+    const [rerankedResults, setRerankedResults] = useState<BackendSearchResponse | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showInitialResults, setShowInitialResults] = useState(false);
 
     const query = searchParams.get('q') || '';
-    const model = searchParams.get('model') || 'einfracz/qwen3-coder';
+    const model = searchParams.get('model') || 'einfracz/gpt-oss-120b';
 
     const performSearch = useCallback(async () => {
         if (!query) {
@@ -27,42 +30,60 @@ export const SearchPage = () => {
         }
 
         setLoading(true);
+        setIsProcessing(false);
         setError(null);
+        setInitialResults(null);
+        setRerankedResults(null);
+        setShowInitialResults(false);
 
         try {
-            const data = await searchWithBackend(query, model, {
+            await searchWithBackend(query, model, {
                 onSearchData: (data) => {
-                    setResults(data);
+                    setInitialResults(data);
                     setLoading(false);
+                    setIsProcessing(true);
+                },
+                onRerankedData: (data) => {
+                    setRerankedResults(data);
+                    setIsProcessing(false);
                 },
                 onError: (err) => {
                     console.error("Search stream error:", err);
                     setError(err.message);
+                    setLoading(false);
+                    setIsProcessing(false);
                 },
                 // onEvent: (event) => {
                 //     console.debug('SSE Event:', event);
                 // },
             });
-            setResults(data);
             addToSearchHistory(query);
         } catch (err) {
             console.error("Search error:", err);
             setError(err instanceof Error ? err.message : "An unknown error occurred.");
-        } finally {
             setLoading(false);
+            setIsProcessing(false);
         }
     }, [query, model, navigate]);
 
     useEffect(() => {
-        performSearch();
+        void (async () => {
+            try {
+                await performSearch();
+            } catch (err) {
+                console.error("Unhandled search error:", err);
+            }
+        })();
     }, [performSearch]);
 
     const handleSearch = (newQuery: string, newModel: string) => {
         setSearchParams({q: newQuery, model: newModel});
     };
 
-    const datasets = results?.hits || [];
-    const summary = results?.summary || '';
+    const displayResults = rerankedResults || initialResults;
+    const datasets = displayResults?.hits || [];
+    const hasRerankedResults = rerankedResults !== null;
+    const hasInitialResults = initialResults !== null;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -82,11 +103,11 @@ export const SearchPage = () => {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Summary only after results arrive and no loading */}
-                {!loading && !error && summary && (
+                {/* Summary - show reranked summary if available */}
+                {!loading && !error && hasRerankedResults && rerankedResults.summary && (
                     <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-blue-200">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Search Summary</h3>
-                        <p className="text-gray-700">{summary}</p>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">AI-Generated Summary</h3>
+                        <p className="text-gray-700">{rerankedResults.summary}</p>
                     </div>
                 )}
 
@@ -121,7 +142,20 @@ export const SearchPage = () => {
                             </div>
                         )}
 
-                        {/* Results (hidden from screen readers while loading to prevent duplicate announcements) */}
+                        {/* Processing indicator - shows when initial results exist but reranking is in progress */}
+                        {!loading && !error && hasInitialResults && isProcessing && (
+                            <div
+                                className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm border border-blue-300 animate-pulse">
+                                <div className="flex items-center space-x-3 text-blue-700">
+                                    <Sparkles className="h-5 w-5 animate-pulse"/>
+                                    <span
+                                        className="text-sm font-medium">AI is analyzing and reranking results...</span>
+                                    <LoaderIcon className="h-4 w-4 animate-spin"/>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Results section */}
                         <div
                             className={loading ? 'opacity-0 pointer-events-none select-none' : 'opacity-100 transition-opacity'}
                             aria-hidden={loading}>
@@ -135,20 +169,85 @@ export const SearchPage = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        <div className="mb-4">
-                                            <p className="text-gray-600">
-                                                Found {datasets.length} dataset{datasets.length !== 1 ? 's' : ''}
-                                            </p>
-                                        </div>
+                                        {/* Reranked Results Section */}
+                                        {hasRerankedResults && (
+                                            <div className="mb-8">
+                                                <div className="mb-4 flex items-center justify-between">
+                                                    <div className="flex items-center space-x-2">
+                                                        <Sparkles className="h-5 w-5 text-blue-600"/>
+                                                        <p className="text-gray-700 font-medium">
+                                                            AI-Ranked Results
+                                                            ({rerankedResults.hits.length} dataset{rerankedResults.hits.length !== 1 ? 's' : ''})
+                                                        </p>
+                                                    </div>
+                                                </div>
 
-                                        <div className="space-y-4 mb-8">
-                                            {datasets.map((dataset, index) => (
-                                                <SearchResultItem
-                                                    key={`${dataset._id}-${index}`}
-                                                    hit={dataset}
-                                                />
-                                            ))}
-                                        </div>
+                                                <div className="space-y-4">
+                                                    {rerankedResults.hits.map((dataset, index) => (
+                                                        <SearchResultItem
+                                                            key={`reranked-${dataset._id}-${index}`}
+                                                            hit={dataset}
+                                                            isAiRanked={true}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Initial Results (collapsed when reranked results exist) */}
+                                        {!hasRerankedResults && hasInitialResults && (
+                                            <div className="mb-8">
+                                                <div className="mb-4">
+                                                    <p className="text-gray-600">
+                                                        Found {initialResults.hits.length} dataset{initialResults.hits.length !== 1 ? 's' : ''}
+                                                    </p>
+                                                </div>
+
+                                                <div className="space-y-4">
+                                                    {initialResults.hits.map((dataset, index) => (
+                                                        <SearchResultItem
+                                                            key={`initial-${dataset._id}-${index}`}
+                                                            hit={dataset}
+                                                            isAiRanked={false}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Collapsible Initial Results Section (when reranked results exist) */}
+                                        {hasRerankedResults && hasInitialResults && (
+                                            <div className="mb-8">
+                                                <button
+                                                    onClick={() => setShowInitialResults(!showInitialResults)}
+                                                    className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
+                                                >
+                                                    <div className="flex items-center space-x-2">
+                                                        <span className="text-gray-700 font-medium">
+                                                            Initial Search Results ({initialResults.hits.length} dataset{initialResults.hits.length !== 1 ? 's' : ''})
+                                                        </span>
+                                                    </div>
+                                                    {showInitialResults ? (
+                                                        <ChevronUp className="h-5 w-5 text-gray-600"/>
+                                                    ) : (
+                                                        <ChevronDown className="h-5 w-5 text-gray-600"/>
+                                                    )}
+                                                </button>
+
+                                                {showInitialResults && (
+                                                    <div
+                                                        className="mt-4 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                                                        {initialResults.hits.map((dataset, index) => (
+                                                            <SearchResultItem
+                                                                key={`initial-collapsed-${dataset._id}-${index}`}
+                                                                hit={dataset}
+                                                                isAiRanked={false}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </>
                                 )
                             )}

@@ -19,17 +19,21 @@ export interface SSEEvent {
     tool_call_id?: string;
     content?: string;
     role?: string;
+    error?: string; // For RUN_ERROR events
+    timestamp?: string | null;
+    raw_event?: unknown;
 }
 
 export interface SSEEventHandler {
     onSearchData?: (data: BackendSearchResponse) => void;
+    onRerankedData?: (data: BackendSearchResponse) => void;
     onEvent?: (event: SSEEvent) => void;
     onError?: (error: Error) => void;
 }
 
 export const searchWithBackend = async (
     query: string,
-    model: string = 'einfracz/qwen3-coder',
+    model: string = 'einfracz/gpt-oss-120b',
     handlers: SSEEventHandler
 ): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
@@ -50,16 +54,31 @@ export const searchWithBackend = async (
         // Handle SSE stream based on tool_call_id
         return handleStream(response, (event) => {
             if (handlers?.onEvent) handlers.onEvent(event);
+
+            // Handle RUN_ERROR - unrecoverable error during agent run
+            if (event.type === 'RUN_ERROR') {
+                const errorMessage = event.error || event.content || 'Agent run failed';
+                const error = new Error(errorMessage);
+                if (handlers?.onError) handlers.onError(error);
+                throw error; // Terminate stream processing
+            }
+
+            // Handle TOOL_CALL_RESULT events
             if (event.type === 'TOOL_CALL_RESULT' && event.content) {
                 const searchResp = JSON.parse(event.content) as BackendSearchResponse;
-                if (event.tool_call_id === 'rerank_results')
-                    handlers.onSearchData(searchResp);
-                else if (event.tool_call_id === 'search_data')
-                    handlers.onSearchData(searchResp);
+                if (event.tool_call_id === 'rerank_results') {
+                    if (handlers.onRerankedData) handlers.onRerankedData(searchResp);
+                } else if (event.tool_call_id === 'search_data') {
+                    if (handlers.onSearchData) handlers.onSearchData(searchResp);
+                }
                 return searchResp;
-            } else if (event.type === 'error' && handlers?.onError) {
-                handlers.onError(new Error(event.content));
             }
+
+            // Legacy error handling (backward compatibility)
+            if (event.type === 'error' && handlers?.onError) {
+                handlers.onError(new Error(event.content || 'Unknown error'));
+            }
+
             return null;
         });
     } catch (error) {
@@ -81,6 +100,7 @@ const handleStream = async (
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
     let buffer = '';
     let latestResults: BackendSearchResponse | null = null;
+    let runError: Error | null = null;
 
     try {
         while (true) {
@@ -95,13 +115,31 @@ const handleStream = async (
                     const dataLine = part.split('\n').find(line => line.startsWith('data:'));
                     if (!dataLine) continue;
                     const event = JSON.parse(dataLine.slice(5).trim()) as SSEEvent;
-                    const result = onMessage(event);
-                    if (result) latestResults = result;
+                    try {
+                        const result = onMessage(event);
+                        if (result) latestResults = result;
+                    } catch (e) {
+                        // RUN_ERROR thrown from onMessage handler
+                        if (e instanceof Error) {
+                            runError = e;
+                            break; // Stop processing further events
+                        }
+                        throw e;
+                    }
                 } catch (e) {
-                    logError(e, 'Failed to parse SSE event');
+                    // Only log parse errors, not runtime errors
+                    if (!runError) {
+                        logError(e, 'Failed to parse SSE event');
+                    }
                 }
             }
+            // Break outer loop if we encountered a RUN_ERROR
+            if (runError) break;
         }
+
+        // If we encountered a RUN_ERROR, throw it
+        if (runError) throw runError;
+
         if (!latestResults) throw new Error('No search results received');
         return latestResults;
     } finally {
