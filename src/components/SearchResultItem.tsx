@@ -5,9 +5,10 @@ import {CitationExport} from './CitationExport';
 
 interface SearchResultItemProps {
     hit: BackendDataset;
+    isAiRanked?: boolean;
 }
 
-export const SearchResultItem = ({hit}: SearchResultItemProps) => {
+export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProps) => {
     const cleanDescription = (html: string) => {
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -17,18 +18,43 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
 
     const scorePercent = (hit.score || 0) * 100;
 
+    // Get publication date from publicationDate field or fallback to _source.dates
+    const getPublicationDate = (): string | null => {
+        if (hit.publicationDate) {
+            return hit.publicationDate;
+        }
+        // Fallback: look for a date in _source.dates with dateType "Issued" or "Created"
+        if (hit._source.dates && hit._source.dates.length > 0) {
+            const issuedDate = hit._source.dates.find(d => d.dateType === 'Issued');
+            if (issuedDate) return issuedDate.date;
+            const createdDate = hit._source.dates.find(d => d.dateType === 'Created');
+            if (createdDate) return createdDate.date;
+            // If no specific type found, use the first date
+            return hit._source.dates[0].date;
+        }
+        return null;
+    };
+
+    const publicationDate = getPublicationDate();
+
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div className={`rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow ${
+            isAiRanked
+                ? 'bg-white border-gray-200'
+                : 'bg-gray-50/50 border-gray-300'
+        }`}>
             <div className="flex flex-col sm:flex-row justify-between items-start mb-3">
                 <h3 className="text-lg font-semibold text-gray-900 pr-4 mb-2 sm:mb-0">
                     {hit.title}
                 </h3>
-                <div className="flex-shrink-0 flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
-                    <ProportionalStar percent={scorePercent} className="h-4 w-4"/>
-                    <span className="text-sm font-medium text-yellow-700">
-                        {scorePercent.toFixed(0)}%
-                    </span>
-                </div>
+                {isAiRanked && hit.score !== undefined && (
+                    <div className="flex-shrink-0 flex items-center space-x-1 bg-yellow-50 px-2 py-1 rounded-full">
+                        <ProportionalStar percent={scorePercent} className="h-4 w-4"/>
+                        <span className="text-sm font-medium text-yellow-700">
+                            {scorePercent.toFixed(0)}%
+                        </span>
+                    </div>
+                )}
             </div>
 
             <p className="text-gray-700 mb-4 leading-relaxed">
@@ -46,11 +72,11 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                     </div>
                 )}
 
-                {hit.publicationDate &&
+                {publicationDate &&
                     <div className="flex items-center space-x-2">
                         <CalendarIcon className="h-4 w-4 text-gray-500"/>
                         <span className="text-sm text-gray-600">
-                            {new Date(hit.publicationDate).toISOString().slice(0, 10).replace(/-/g, '.')}
+                            {new Date(publicationDate).toISOString().slice(0, 10).replace(/-/g, '.')}
                         </span>
                     </div>
                 }
@@ -86,7 +112,9 @@ export const SearchResultItem = ({hit}: SearchResultItemProps) => {
                     </a>
                     <CitationExport dataset={hit}/>
                 </div>
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
+                {isAiRanked && (
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
+                )}
             </div>
         </div>
     );

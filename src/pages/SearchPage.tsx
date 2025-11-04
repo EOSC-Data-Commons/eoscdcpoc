@@ -187,6 +187,7 @@ export const SearchPage = () => {
                                                         <SearchResultItem
                                                             key={`reranked-${dataset._id}-${index}`}
                                                             hit={dataset}
+                                                            isAiRanked={true}
                                                         />
                                                     ))}
                                                 </div>
@@ -207,6 +208,7 @@ export const SearchPage = () => {
                                                         <SearchResultItem
                                                             key={`initial-${dataset._id}-${index}`}
                                                             hit={dataset}
+                                                            isAiRanked={false}
                                                         />
                                                     ))}
                                                 </div>
@@ -239,6 +241,7 @@ export const SearchPage = () => {
                                                             <SearchResultItem
                                                                 key={`initial-collapsed-${dataset._id}-${index}`}
                                                                 hit={dataset}
+                                                                isAiRanked={false}
                                                             />
                                                         ))}
                                                     </div>
