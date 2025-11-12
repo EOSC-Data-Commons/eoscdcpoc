@@ -77,6 +77,14 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                         </span>
                     </div>
                 )}
+                {!isAiRanked && typeof hit._score === 'number' && !Number.isNaN(hit._score) && (
+                    <div className="flex-shrink-0 flex items-center space-x-1 bg-blue-50 px-2 py-1 rounded-full">
+                        <ProportionalStar percent={(hit._score || 0) * 100} className="h-4 w-4" color="#005EB8"/>
+                        <span className="text-sm font-semibold" style={{color: '#005EB8'}}>
+                            {(((hit._score || 0) * 100)).toFixed(0)}%
+                        </span>
+                    </div>
+                )}
             </div>
 
             <p className="text-gray-700 mb-4 leading-relaxed">

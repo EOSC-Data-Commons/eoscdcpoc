@@ -43,8 +43,8 @@ export interface SearchHitSrc {
 export interface BackendDataset {
     _id: string;
     _source: SearchHitSrc;
-    opensearch_score: number;
-    score?: number | null;
+    _score: number; //OpenSearch Score
+    score?: number | null; //LLM Ranked Score
     file_extensions?: string[] | null;
     title?: string | null;
     description?: string | null;
