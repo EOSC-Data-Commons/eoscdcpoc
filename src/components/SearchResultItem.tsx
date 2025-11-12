@@ -2,6 +2,7 @@ import type {BackendDataset} from "../types/commons.ts";
 import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';
+import {useState} from 'react';
 
 interface SearchResultItemProps {
     hit: BackendDataset;
@@ -13,8 +14,11 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
         const div = document.createElement('div');
         div.innerHTML = html;
         const text = div.textContent || div.innerText || '';
-        return text.length > 300 ? text.substring(0, 300) + '...' : text;
+        return text; // return full cleaned text; truncation handled in render
     };
+
+    const [descExpanded, setDescExpanded] = useState(false);
+    const [authorsExpanded, setAuthorsExpanded] = useState(false);
 
     const scorePercent = (hit.score || 0) * 100;
 
@@ -59,6 +63,21 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
         return new Date(dateStr).toISOString().slice(0, 10).replace(/-/g, '.');
     };
 
+    // Description compute
+    const fullDescription = cleanDescription(hit.description || '');
+    const descLimit = 300;
+    const isDescTruncated = fullDescription.length > descLimit;
+    const visibleDescription = descExpanded || !isDescTruncated
+        ? fullDescription
+        : fullDescription.slice(0, descLimit) + '...';
+
+    // Authors compute
+    const creators = hit._source.creators || [];
+    const baseAuthorsToShow = 3;
+    const showAllAuthors = authorsExpanded || creators.length <= baseAuthorsToShow;
+    const visibleCreators = showAllAuthors ? creators : creators.slice(0, baseAuthorsToShow);
+    const remainingAuthors = Math.max(0, creators.length - baseAuthorsToShow);
+
     return (
         <div className={`rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow ${
             isAiRanked
@@ -77,20 +96,52 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                         </span>
                     </div>
                 )}
+                {!isAiRanked && typeof hit._score === 'number' && !Number.isNaN(hit._score) && (
+                    <div className="flex-shrink-0 flex items-center space-x-1 bg-blue-50 px-2 py-1 rounded-full">
+                        <ProportionalStar percent={(hit._score || 0) * 100} className="h-4 w-4" color="#005EB8"/>
+                        <span className="text-sm font-semibold" style={{color: '#005EB8'}}>
+                            {(((hit._score || 0) * 100)).toFixed(0)}%
+                        </span>
+                    </div>
+                )}
             </div>
 
-            <p className="text-gray-700 mb-4 leading-relaxed">
-                {cleanDescription(hit.description)}
-            </p>
+            <div className="mb-4">
+                <p className="text-gray-700 leading-relaxed inline">
+                    {visibleDescription}
+                </p>
+                {isDescTruncated && (
+                    <button
+                        type="button"
+                        onClick={() => setDescExpanded(v => !v)}
+                        aria-expanded={descExpanded}
+                        className="ml-2 text-blue-700 hover:text-blue-800 hover:underline text-sm font-medium align-baseline cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        {descExpanded ? 'Show less' : 'Show more'}
+                    </button>
+                )}
+            </div>
 
             <div className="space-y-2 mb-4">
-                {hit._source.creators?.length > 0 && (
-                    <div className="flex items-center space-x-2">
-                        <UserIcon className="h-4 w-4 text-gray-500 flex-shrink-0"/>
-                        <span className="text-sm text-gray-600">
-                            {hit._source.creators.map(creator => creator.creatorName).slice(0, 3).join(', ')}
-                            {hit._source.creators.length > 3 && ` +${hit._source.creators.length - 3} more`}
-                        </span>
+                {creators.length > 0 && (
+                    <div className="flex items-start space-x-2">
+                        <UserIcon className="h-4 w-4 text-gray-500 flex-shrink-0 mt-0.5"/>
+                        <div>
+                            <span className="text-sm text-gray-600">
+                                {visibleCreators.map(c => c.creatorName).join(', ')}
+                                {!showAllAuthors && remainingAuthors > 0 && `, +${remainingAuthors} more`}
+                            </span>
+                            {creators.length > baseAuthorsToShow && (
+                                <button
+                                    type="button"
+                                    onClick={() => setAuthorsExpanded(v => !v)}
+                                    aria-expanded={authorsExpanded}
+                                    className="ml-2 text-blue-700 hover:text-blue-800 hover:underline text-xs font-medium cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                >
+                                    {authorsExpanded ? 'Show less' : 'Show all'}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 )}
 
