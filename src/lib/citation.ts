@@ -39,15 +39,15 @@ const extractDOI = (url: string): string | undefined => {
 };
 
 export const generateBibTeX = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publication_date);
-    const keyBase = `${firstCreatorLastName(ds.creators)}_${year}_${ds.id}`.replace(/[^A-Za-z0-9_]/g, "");
-    const authors = formatAuthorsBibTeX(ds.creators);
-    const doi = extractDOI(ds.url);
+    const year = extractYear(ds.publicationDate);
+    const keyBase = `${firstCreatorLastName(ds._source.creators.map(creator => creator.creatorName))}_${year}_${ds._id}`.replace(/[^A-Za-z0-9_]/g, "");
+    const authors = formatAuthorsBibTeX(ds._source.creators.map(creator => creator.creatorName));
+    const doi = extractDOI(ds._id);
     const fields: Record<string, string | undefined> = {
-        title: sanitize(ds.title),
+        title: sanitize(ds.title || ''),
         author: authors || undefined,
         year: year !== 'n.d.' ? year : undefined,
-        url: ds.url,
+        url: ds._id,
         note: `Accessed: ${new Date().toISOString().split('T')[0]}`,
         doi
     };
@@ -62,51 +62,51 @@ export const generateBibTeX = (ds: BackendDataset): string => {
 };
 
 export const generateRIS = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publication_date);
-    const date = new Date(ds.publication_date);
+    const year = extractYear(ds.publicationDate);
+    const date = new Date(ds.publicationDate);
     const datePart = isNaN(date.getTime()) ? '' : `${date.getUTCFullYear()}/${String(date.getUTCMonth()+1).padStart(2,'0')}/${String(date.getUTCDate()).padStart(2,'0')}`;
-    const doi = extractDOI(ds.url);
+    const doi = extractDOI(ds._id);
     const lines: string[] = [];
     lines.push('TY  - DATA');
     lines.push(`TI  - ${sanitize(ds.title)}`);
-    ds.creators?.forEach(c => lines.push(`AU  - ${c}`));
+    ds._source.creators.forEach(c => lines.push(`AU  - ${c.creatorName}`));
     if (year !== 'n.d.') lines.push(`PY  - ${year}`);
     if (datePart) lines.push(`DA  - ${datePart}`);
     if (doi) lines.push(`DO  - ${doi}`);
-    lines.push(`UR  - ${ds.url}`);
+    lines.push(`UR  - ${ds._id}`);
     lines.push('ER  - ');
     return lines.join('\n');
 };
 
 export const generateEndNote = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publication_date);
-    const doi = extractDOI(ds.url);
+    const year = extractYear(ds.publicationDate);
+    const doi = extractDOI(ds._id);
     const lines: string[] = [];
     lines.push('%0 Dataset');
     lines.push(`%T ${sanitize(ds.title)}`);
-    ds.creators?.forEach(c => lines.push(`%A ${c}`));
+    ds._source.creators?.forEach(c => lines.push(`%A ${c.creatorName}`));
     if (year !== 'n.d.') lines.push(`%D ${year}`);
     if (doi) lines.push(`%R ${doi}`);
-    lines.push(`%U ${ds.url}`);
+    lines.push(`%U ${ds._id}`);
     lines.push(`%~ Accessed ${new Date().toISOString().split('T')[0]}`);
     return lines.join('\n');
 };
 
 export const generateCSLJSON = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publication_date);
-    const date = new Date(ds.publication_date);
+    const year = extractYear(ds.publicationDate);
+    const date = new Date(ds.publicationDate);
     const dateParts = isNaN(date.getTime()) ? undefined : [[date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()]];
-    const authors = ds.creators?.map(name => ({ literal: name.trim() })).filter(a => a.literal.length);
+    const authors = ds._source.creators?.map(c => ({ literal: c.creatorName.trim() })).filter(a => a.literal.length);
     const obj: Record<string, unknown> = {
         type: 'dataset',
-        id: ds.id,
+        id: ds._id,
         title: ds.title,
         author: authors.length ? authors : undefined,
         issued: dateParts ? { 'date-parts': dateParts } : undefined,
-        URL: ds.url,
+        URL: ds._id,
         accessed: { 'date-parts': [[new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate()]] },
         'original-date': year !== 'n.d.' ? { 'date-parts': [[Number(year)]] } : undefined,
-        keyword: ds.keywords && ds.keywords.length ? ds.keywords.join(', ') : undefined,
+        keyword: ds._source.subjects && ds._source.subjects.length ? ds._source.subjects.map(subj => subj.subject).join(', ') : undefined,
         'container-title': undefined
     };
     // Remove undefined
@@ -116,15 +116,15 @@ export const generateCSLJSON = (ds: BackendDataset): string => {
 
 export const generateRefWorks = (ds: BackendDataset): string => {
     // RefWorks Tagged Format (simplified)
-    const year = extractYear(ds.publication_date);
+    const year = extractYear(ds.publicationDate);
     const lines: string[] = [];
     lines.push('RT Dataset');
     lines.push('SR Electronic');
-    ds.creators?.forEach(c => lines.push(`A1 ${c}`));
+    ds._source.creators?.forEach(c => lines.push(`A1 ${c.creatorName}`));
     lines.push(`T1 ${ds.title}`);
     if (year !== 'n.d.') lines.push(`YR ${year}`);
-    if (ds.keywords) ds.keywords.slice(0, 15).forEach(kw => lines.push(`K1 ${kw}`));
-    lines.push(`UL ${ds.url}`);
+    if (ds._source.subjects) ds._source.subjects.slice(0, 15).forEach(kw => lines.push(`K1 ${kw.subject}`));
+    lines.push(`UL ${ds._id}`);
     lines.push(`NO Accessed ${new Date().toISOString().split('T')[0]}`);
     lines.push('ER');
     return lines.join('\n');
