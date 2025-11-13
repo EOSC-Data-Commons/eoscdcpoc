@@ -1,9 +1,9 @@
 ---
-name: "Bug Report or Feature Request"
-description: "Report a bug or request a feature for this project."
+name: Bug Report or Feature Request
+about: Report a bug or request a feature for this project
 title: "[Bug] <title> or [Feature] <title>"
-labels: [ ]
-assignees: [ ]
+labels: ''
+assignees: ''
 ---
 
 ## Issue Type
