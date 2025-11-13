@@ -1,7 +1,7 @@
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import type { BackendDataset } from '../types/commons';
-import { generateBibTeX, generateRIS, generateEndNote, generateCSLJSON, generateRefWorks } from '../lib/citation';
-import { BookOpenIcon, ClipboardIcon, CheckIcon, DownloadIcon } from 'lucide-react';
+import {useState, useCallback, useRef, useEffect, useMemo} from 'react';
+import type {BackendDataset} from '../types/commons';
+import {generateBibTeX, generateRIS, generateEndNote, generateCSLJSON, generateRefWorks} from '../lib/citation';
+import {BookOpenIcon, ClipboardIcon, CheckIcon, DownloadIcon} from 'lucide-react';
 
 interface CitationExportProps {
     dataset: BackendDataset;
@@ -10,11 +10,11 @@ interface CitationExportProps {
 type CitationFormat = 'bibtex' | 'ris' | 'endnote' | 'csljson' | 'refworks';
 
 const LABELS: Record<CitationFormat, { label: string; ext: string; mime: string }> = {
-    bibtex: { label: 'BibTeX', ext: 'bib', mime: 'application/x-bibtex' },
-    ris: { label: 'RIS', ext: 'ris', mime: 'application/x-research-info-systems' },
-    endnote: { label: 'EndNote', ext: 'enw', mime: 'application/x-endnote-refer' },
-    csljson: { label: 'CSL JSON', ext: 'json', mime: 'application/vnd.citationstyles.csl+json' },
-    refworks: { label: 'RefWorks', ext: 'rwk', mime: 'text/plain' }
+    bibtex: {label: 'BibTeX', ext: 'bib', mime: 'application/x-bibtex'},
+    ris: {label: 'RIS', ext: 'ris', mime: 'application/x-research-info-systems'},
+    endnote: {label: 'EndNote', ext: 'enw', mime: 'application/x-endnote-refer'},
+    csljson: {label: 'CSL JSON', ext: 'json', mime: 'application/vnd.citationstyles.csl+json'},
+    refworks: {label: 'RefWorks', ext: 'rwk', mime: 'text/plain'}
 };
 
 const GENERATORS: Record<CitationFormat, (d: BackendDataset) => string> = {
@@ -25,7 +25,7 @@ const GENERATORS: Record<CitationFormat, (d: BackendDataset) => string> = {
     refworks: generateRefWorks
 };
 
-export const CitationExport = ({ dataset }: CitationExportProps) => {
+export const CitationExport = ({dataset}: CitationExportProps) => {
     const [open, setOpen] = useState(false);
     const [format, setFormat] = useState<CitationFormat>('bibtex');
     const [copied, setCopied] = useState(false);
@@ -59,8 +59,8 @@ export const CitationExport = ({ dataset }: CitationExportProps) => {
     };
 
     const handleDownload = () => {
-        const { ext, mime } = LABELS[format];
-        const blob = new Blob([citation], { type: `${mime};charset=utf-8` });
+        const {ext, mime} = LABELS[format];
+        const blob = new Blob([citation], {type: `${mime};charset=utf-8`});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         const safeTitle = dataset.title.replace(/[^A-Za-z0-9._-]+/g, '_').slice(0, 60) || 'citation';
@@ -78,9 +78,9 @@ export const CitationExport = ({ dataset }: CitationExportProps) => {
                 onClick={() => setOpen(o => !o)}
                 aria-haspopup="true"
                 aria-expanded={open}
-                className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
+                className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer"
             >
-                <BookOpenIcon className="h-4 w-4" />
+                <BookOpenIcon className="h-4 w-4"/>
                 <span className="leading-none">Cite</span>
             </button>
 
@@ -90,7 +90,8 @@ export const CitationExport = ({ dataset }: CitationExportProps) => {
                     aria-label="Export citation"
                     className="absolute right-0 z-20 mt-2 w-72 rounded-md border border-gray-200 bg-white p-3 shadow-lg"
                 >
-                    <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Export Citation</h4>
+                    <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Export
+                        Citation</h4>
                     <label className="flex flex-col gap-1 mb-2 text-xs text-gray-600">
                         Format
                         <select
@@ -110,7 +111,7 @@ export const CitationExport = ({ dataset }: CitationExportProps) => {
                             aria-label="Copy citation"
                             className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium"
                         >
-                            {copied ? <CheckIcon className="h-3 w-3" /> : <ClipboardIcon className="h-3 w-3" />}
+                            {copied ? <CheckIcon className="h-3 w-3"/> : <ClipboardIcon className="h-3 w-3"/>}
                             <span className="ml-1">{copied ? 'Copied' : 'Copy'}</span>
                         </button>
                         <button
@@ -119,12 +120,14 @@ export const CitationExport = ({ dataset }: CitationExportProps) => {
                             aria-label="Download citation file"
                             className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium"
                         >
-                            <DownloadIcon className="h-3 w-3" />
+                            <DownloadIcon className="h-3 w-3"/>
                             <span className="ml-1">Download</span>
                         </button>
                     </div>
-                    <pre className="max-h-48 overflow-auto text-[11px] leading-snug bg-gray-50 border border-gray-100 rounded p-2 whitespace-pre-wrap text-gray-600 font-mono">{citation}</pre>
-                    <div className="pt-2 text-[10px] text-gray-400">Generated automatically; please verify before use.</div>
+                    <pre
+                        className="max-h-48 overflow-auto text-[11px] leading-snug bg-gray-50 border border-gray-100 rounded p-2 whitespace-pre-wrap text-gray-600 font-mono">{citation}</pre>
+                    <div className="pt-2 text-[10px] text-gray-400">Generated automatically; please verify before use.
+                    </div>
                 </div>
             )}
         </div>

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-11-13
+
+- Enhanced search results UI: descriptions and author lists are now expandable, and OpenSearch scores for non-AI-ranked
+  results are shown with proportional stars and percentages.
+- Minor UI improvements in citation export.
+- Updated multiple dependencies and devDependencies to the latest versions for improved compatibility and security.
+- GitHub issue template configuration updated: blank issues are disabled, and a contact link to Discussions is added for
+  questions/help.
+
 ## [0.2.0] - 2025-11-07
 
 - Refactored backend search to support SSE streaming and improved error handling.
