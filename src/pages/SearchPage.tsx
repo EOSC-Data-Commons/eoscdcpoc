@@ -40,6 +40,7 @@ export const SearchPage = () => {
             await searchWithBackend(query, model, {
                 onSearchData: (data) => {
                     setInitialResults(data);
+                    console.log("Initial search data received:", data);
                     setLoading(false);
                     setIsProcessing(true);
                 },
