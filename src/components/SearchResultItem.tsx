@@ -198,7 +198,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     <button
                         onClick={handleRunWorkflow}
                         aria-label={`Run workflow for ${hit.title}`}
-                        className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer">
+                        className="inline-flex items-center justify-center gap-1 rounded-md bg-purple-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer">
                         <PlayIcon className="h-4 w-4"/>
                         <span className="leading-none">Run</span>
                     </button>
