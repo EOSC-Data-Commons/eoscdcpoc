@@ -11,9 +11,13 @@ const METADATA_ENDPOINT = '/anon_requests/metadata_rocrate/';
 
 type TaskStatus = 'PENDING' | 'SUCCESS' | 'FAILURE' | 'RETRY' | 'STARTED';
 
+interface WorkflowResult {
+    url?: string;
+}
+
 interface TaskStatusResponse {
     status: TaskStatus;
-    result?: unknown;
+    result?: WorkflowResult;
     error?: string;
 }
 
@@ -23,7 +27,7 @@ export const WorkflowRunPage = () => {
     const [statusMessage, setStatusMessage] = useState('Initializing...');
     const [statusType, setStatusType] = useState<'info' | 'success' | 'error' | 'warning'>('info');
     const [taskId, setTaskId] = useState<string | null>(null);
-    const [taskResult, setTaskResult] = useState<unknown>(null);
+    const [taskResult, setTaskResult] = useState<WorkflowResult | null>(null);
 
     const datasetId = searchParams.get('datasetId');
     const datasetTitle = searchParams.get('title');
@@ -57,12 +61,11 @@ export const WorkflowRunPage = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Response result:', result);
-                setStatusMessage('Workflow submitted successfully!');
-                setStatusType('success');
 
                 if (result.task_id) {
                     setTaskId(result.task_id);
                     setStatusMessage('Workflow submitted! Monitoring task progress...');
+                    setStatusType('info');
                     pollTaskStatus(result.task_id);
                 }
             } else {
@@ -240,12 +243,17 @@ export const WorkflowRunPage = () => {
                                     </div>
                                 )}
 
-                                {taskResult && (
+                                {taskResult && taskResult.url && (
                                     <div className="mb-4 p-4 bg-white rounded border">
-                                        <p className="text-sm font-medium text-gray-700 mb-2">Result:</p>
-                                        <pre className="text-sm overflow-x-auto whitespace-pre-wrap">
-                                            {JSON.stringify(taskResult, null, 2)}
-                                        </pre>
+                                        <p className="text-sm font-medium text-gray-700 mb-2">Workflow Ready!</p>
+                                        <p className="text-sm text-gray-600 mb-3">Your workflow is ready to view in
+                                            Galaxy.</p>
+                                        <button
+                                            onClick={() => window.open(taskResult.url, '_blank', 'noopener,noreferrer')}
+                                            className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors cursor-pointer"
+                                        >
+                                            Take me to Galaxy →
+                                        </button>
                                     </div>
                                 )}
 
