@@ -44,8 +44,14 @@ export const searchWithBackend = async (
     try {
         const response = await fetch(`${BACKEND_API_URL}/chat`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'text/event-stream',
+                'Cache-Control': 'no-cache',
+                'X-Accel-Buffering': 'no' // Disable buffering for Nginx proxies
+            },
+            body: JSON.stringify(requestBody),
+            cache: 'no-store'
         });
 
         if (!response.ok) throw new Error(`Error sending the request: ${response.status}`);
