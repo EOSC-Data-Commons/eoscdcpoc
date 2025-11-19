@@ -3,7 +3,7 @@ import {useSearchParams, useNavigate} from 'react-router-dom';
 import {LoaderIcon, CheckCircleIcon, XCircleIcon, AlertCircleIcon} from 'lucide-react';
 import {Footer} from '../components/Footer';
 import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
-import metadataTemplate from '../lib/metadata-template.json';
+import metadataTemplate from '../template/metadata-template.json';
 
 // Use proxy in development to avoid CORS issues
 const API_BASE = import.meta.env.DEV ? '/player-api' : 'https://dev3.player.eosc-data-commons.eu';
