@@ -1,5 +1,5 @@
 import type {BackendDataset} from "../types/commons.ts";
-import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, PlayIcon} from "lucide-react";
+import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, Rocket} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';
 import {useState} from 'react';
@@ -198,8 +198,8 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     <button
                         onClick={handleRunDispatcher}
                         aria-label={`Run dispatcher for ${hit.title}`}
-                        className="inline-flex items-center justify-center gap-1 rounded-md bg-purple-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer">
-                        <PlayIcon className="h-4 w-4"/>
+                        className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer">
+                        <Rocket className="h-4 w-4"/>
                         <span className="leading-none">Run</span>
                     </button>
                     <a href={hit._id} target="_blank" rel="noopener noreferrer"
