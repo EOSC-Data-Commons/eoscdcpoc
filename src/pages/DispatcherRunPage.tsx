@@ -170,55 +170,57 @@ export const DispatcherRunPage = () => {
 
     // Render analysis selection step
     const renderAnalysisSelection = () => (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Analysis</h2>
-                <p className="text-gray-600">Choose the analysis you want to run on your dataset</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Select Analysis</h2>
+                <p className="text-sm sm:text-base text-gray-600">Choose the analysis you want to run on your
+                    dataset</p>
                 {datasetTitle && (
-                    <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-sm font-medium text-gray-700">Dataset:</p>
-                        <p className="text-gray-900">{datasetTitle}</p>
+                    <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <p className="text-xs sm:text-sm font-medium text-gray-700">Dataset:</p>
+                        <p className="text-sm sm:text-base text-gray-900 break-words">{datasetTitle}</p>
                     </div>
                 )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {(Object.entries(DISPATCHER_CONFIGS) as [DispatcherType, typeof DISPATCHER_CONFIGS[DispatcherType]][]).map(([key, config]) => (
                     <button
                         key={key}
                         onClick={() => handleAnalysisSelect(key)}
                         disabled={loadingFiles}
-                        className="p-6 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="p-4 sm:p-6 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{config.name}</h3>
-                        <p className="text-sm text-gray-600">{config.description}</p>
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">{config.name}</h3>
+                        <p className="text-xs sm:text-sm text-gray-600">{config.description}</p>
                     </button>
                 ))}
             </div>
 
             {loadingFiles && (
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 flex items-center gap-3">
-                    <LoaderIcon className="h-5 w-5 text-blue-600 animate-spin"/>
-                    <p className="text-blue-900">Loading files from FileMetrix...</p>
+                <div
+                    className="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200 flex items-center gap-2 sm:gap-3">
+                    <LoaderIcon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 animate-spin flex-shrink-0"/>
+                    <p className="text-sm sm:text-base text-blue-900">Loading files from FileMetrix...</p>
                 </div>
             )}
 
             {filesError && (
-                <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-200">
-                    <p className="text-red-900">{filesError}</p>
+                <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-red-50 rounded-lg border border-red-200">
+                    <p className="text-sm sm:text-base text-red-900 break-words">{filesError}</p>
                     <button
                         onClick={() => selectedAnalysis && handleAnalysisSelect(selectedAnalysis)}
-                        className="mt-3 text-sm text-red-700 underline"
+                        className="mt-2 sm:mt-3 text-xs sm:text-sm text-red-700 underline"
                     >
                         Try again
                     </button>
                 </div>
             )}
 
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
                 <button
                     onClick={() => navigate('/search?q=' + (searchParams.get('q') || ''))}
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-sm sm:text-base text-blue-600 hover:text-blue-700 font-medium"
                 >
                     ← Back to Search Results
                 </button>
@@ -234,28 +236,30 @@ export const DispatcherRunPage = () => {
         const allParametersMapped = areAllParametersMapped(selectedAnalysis, fileParameterMappings);
 
         return (
-            <div className="max-w-5xl mx-auto">
-                <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Map Files to Analysis Parameters</h2>
-                    <p className="text-gray-600">Assign each file to an analysis parameter. Each parameter must have
+            <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                <div className="mb-4 sm:mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Map Files to Analysis
+                        Parameters</h2>
+                    <p className="text-sm sm:text-base text-gray-600">Assign each file to an analysis parameter. Each
+                        parameter must have
                         exactly one file.</p>
 
-                    <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-sm font-medium text-gray-700 mb-1">Selected Analysis:</p>
-                        <p className="text-gray-900 font-semibold">{config.name}</p>
+                    <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Selected Analysis:</p>
+                        <p className="text-sm sm:text-base text-gray-900 font-semibold break-words">{config.name}</p>
                     </div>
                 </div>
 
                 {/* Required Parameters Info */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Required Parameters:</p>
-                    <div className="flex flex-wrap gap-2">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Required Parameters:</p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {config.parameters.map(param => {
                             const isMapped = Object.values(fileParameterMappings).includes(param);
                             return (
                                 <span
                                     key={param}
-                                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                    className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
                                         isMapped
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-yellow-100 text-yellow-800'
@@ -268,8 +272,44 @@ export const DispatcherRunPage = () => {
                     </div>
                 </div>
 
-                {/* Files List */}
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                {/* Files List - Mobile: Cards, Desktop: Table */}
+                {/* Mobile View (Cards) */}
+                <div className="md:hidden space-y-3">
+                    {files.map((file, index) => (
+                        <div key={index} className="bg-white rounded-lg border border-gray-200 p-4">
+                            <div className="mb-3">
+                                <p className="text-xs font-medium text-gray-500 uppercase mb-1">File Name</p>
+                                <p className="text-sm text-gray-900 break-words">{file.name}</p>
+                            </div>
+                            <div className="mb-3">
+                                <p className="text-xs font-medium text-gray-500 uppercase mb-1">Size</p>
+                                <p className="text-sm text-gray-700">{formatFileSize(file.size)}</p>
+                            </div>
+                            <div>
+                                <label htmlFor={`param-mobile-${index}`}
+                                       className="text-xs font-medium text-gray-500 uppercase block mb-1">
+                                    Parameter
+                                </label>
+                                <select
+                                    id={`param-mobile-${index}`}
+                                    value={fileParameterMappings[index] || 'none'}
+                                    onChange={(e) => handleParameterChange(index, e.target.value)}
+                                    className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                    <option value="none">None</option>
+                                    {config.parameters.map(param => (
+                                        <option key={param} value={param}>
+                                            {param}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Desktop View (Table) */}
+                <div className="hidden md:block bg-white rounded-lg border border-gray-200 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
@@ -281,24 +321,24 @@ export const DispatcherRunPage = () => {
                                     Size
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Analysis Parameter
+                                    Parameter
                                 </th>
                             </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                             {files.map((file, index) => (
                                 <tr key={index} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                    <td className="px-6 py-4 text-sm text-gray-900 break-words">
                                         {file.name}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                    <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                         {formatFileSize(file.size)}
                                     </td>
                                     <td className="px-6 py-4">
                                         <select
                                             value={fileParameterMappings[index] || 'none'}
                                             onChange={(e) => handleParameterChange(index, e.target.value)}
-                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                            className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                         >
                                             <option value="none">None</option>
                                             {config.parameters.map(param => (
@@ -316,7 +356,8 @@ export const DispatcherRunPage = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="mt-6 flex items-center justify-between">
+                <div
+                    className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
                     <button
                         onClick={() => {
                             setCurrentStep('select-analysis');
@@ -324,23 +365,23 @@ export const DispatcherRunPage = () => {
                             setFiles([]);
                             setFileParameterMappings({});
                         }}
-                        className="text-blue-600 hover:text-blue-700 font-medium"
+                        className="text-sm sm:text-base text-blue-600 hover:text-blue-700 font-medium text-center sm:text-left"
                     >
                         ← Change Analysis
                     </button>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                         {!allParametersMapped && (
-                            <p className="text-sm text-yellow-700">
-                                Please map all required parameters to proceed
+                            <p className="text-xs sm:text-sm text-yellow-700 text-center sm:text-right">
+                                Map all required parameters to proceed
                             </p>
                         )}
                         <button
                             onClick={handleSubmit}
                             disabled={!allParametersMapped}
-                            className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                         >
-                            Submit Workflow
+                            Submit Analysis
                         </button>
                     </div>
                 </div>
@@ -350,54 +391,55 @@ export const DispatcherRunPage = () => {
 
     // Render submitting/monitoring step
     const renderMonitoring = () => (
-        <div className="max-w-3xl mx-auto">
-            <div className={`rounded-lg border-2 p-8 ${getStatusColorClass()}`}>
-                <div className="flex items-start space-x-4">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <div className={`rounded-lg border-2 p-4 sm:p-6 md:p-8 ${getStatusColorClass()}`}>
+                <div className="flex items-start space-x-3 sm:space-x-4">
                     <div className="flex-shrink-0">
                         {getStatusIcon()}
                     </div>
-                    <div className="flex-1">
-                        <h2 className="text-xl font-semibold mb-2">Analysis Status</h2>
-                        <p className="text-lg mb-4">{statusMessage}</p>
+                    <div className="flex-1 min-w-0">
+                        <h2 className="text-lg sm:text-xl font-semibold mb-2">Analysis Status</h2>
+                        <p className="text-base sm:text-lg mb-4 break-words">{statusMessage}</p>
 
                         {selectedAnalysis && (
-                            <div className="mb-4 p-4 bg-white rounded border">
-                                <p className="text-sm font-medium text-gray-700 mb-1">Analysis:</p>
-                                <p className="text-gray-900">{DISPATCHER_CONFIGS[selectedAnalysis].name}</p>
+                            <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Analysis:</p>
+                                <p className="text-sm sm:text-base text-gray-900 break-words">{DISPATCHER_CONFIGS[selectedAnalysis].name}</p>
                             </div>
                         )}
 
                         {datasetTitle && (
-                            <div className="mb-4 p-4 bg-white rounded border">
-                                <p className="text-sm font-medium text-gray-700 mb-1">Dataset:</p>
-                                <p className="text-gray-900">{datasetTitle}</p>
+                            <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Dataset:</p>
+                                <p className="text-sm sm:text-base text-gray-900 break-words">{datasetTitle}</p>
                             </div>
                         )}
 
                         {taskId && (
-                            <div className="mb-4 p-4 bg-white rounded border">
-                                <p className="text-sm font-medium text-gray-700 mb-1">Task ID:</p>
-                                <p className="text-gray-900 font-mono text-sm">{taskId}</p>
+                            <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Task ID:</p>
+                                <p className="text-xs sm:text-sm text-gray-900 font-mono break-all">{taskId}</p>
                             </div>
                         )}
 
                         {taskResult && taskResult.url && (
-                            <div className="mb-4 p-4 bg-white rounded border">
-                                <p className="text-sm font-medium text-gray-700 mb-2">Analysis Ready!</p>
-                                <p className="text-sm text-gray-600 mb-3">Your analysis is ready to view in Galaxy.</p>
+                            <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Analysis Ready!</p>
+                                <p className="text-xs sm:text-sm text-gray-600 mb-3">Your analysis is ready to view in
+                                    Galaxy.</p>
                                 <button
                                     onClick={() => window.open(taskResult.url, '_blank', 'noopener,noreferrer')}
-                                    className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors cursor-pointer"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors cursor-pointer"
                                 >
                                     Take me to Galaxy →
                                 </button>
                             </div>
                         )}
 
-                        <div className="flex flex-wrap gap-3 mt-6">
+                        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 mt-4 sm:mt-6">
                             <button
                                 onClick={() => navigate('/search?q=' + (searchParams.get('q') || ''))}
-                                className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors cursor-pointer"
+                                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors cursor-pointer"
                             >
                                 Back to Search Results
                             </button>
@@ -412,7 +454,7 @@ export const DispatcherRunPage = () => {
                                         setTaskId(null);
                                         setTaskResult(null);
                                     }}
-                                    className="inline-flex items-center justify-center gap-2 rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 transition-colors cursor-pointer"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 transition-colors cursor-pointer"
                                 >
                                     Start Over
                                 </button>
@@ -427,24 +469,25 @@ export const DispatcherRunPage = () => {
     return (
         <div className="min-h-screen flex flex-col">
             <header className="border-b border-gray-200 bg-white">
-                <div className="container mx-auto px-4 py-4">
+                <div className="container mx-auto px-4 py-3 sm:py-4">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-                            <img src={dataCommonsIconBlue} alt="Data Commons" className="h-10 w-10"/>
-                            <div className="flex flex-col space-y-1">
+                        <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer"
+                             onClick={() => navigate('/')}>
+                            <img src={dataCommonsIconBlue} alt="Data Commons" className="h-8 w-8 sm:h-10 sm:w-10"/>
+                            <div className="flex flex-col space-y-0.5 sm:space-y-1">
                                 <img
                                     src={eoscLogo}
                                     alt="EOSC Data Commons"
-                                    className="h-8 w-auto"
+                                    className="h-6 sm:h-8 w-auto"
                                 />
-                                <p className="text-sm text-gray-600">Dispatcher Execution</p>
+                                <p className="text-xs sm:text-sm text-gray-600">Dispatcher Execution</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <main className="flex-1 container mx-auto px-4 py-8">
+            <main className="flex-1 container mx-auto py-4 sm:py-6 md:py-8">
                 {currentStep === 'select-analysis' && renderAnalysisSelection()}
                 {currentStep === 'map-files' && renderFileMapping()}
                 {(currentStep === 'submitting' || currentStep === 'monitoring') && renderMonitoring()}
