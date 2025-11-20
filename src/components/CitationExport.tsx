@@ -78,7 +78,7 @@ export const CitationExport = ({dataset}: CitationExportProps) => {
                 onClick={() => setOpen(o => !o)}
                 aria-haspopup="true"
                 aria-expanded={open}
-                className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-1 rounded-md bg-gray-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors cursor-pointer"
             >
                 <BookOpenIcon className="h-4 w-4"/>
                 <span className="leading-none">Cite</span>
