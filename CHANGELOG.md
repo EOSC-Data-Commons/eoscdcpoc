@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2025-11-24
+
+- Integrated EOSC Player Dispatcher, allowing users to run analyses on datasets directly from search results.
+- Added `RepoLogo` component to display repository logos in search results for better dataset origin identification.
+- Standardized citation export to consistently use the `publication_date` field.
+- Updated "Cite" button color to gray for improved UI consistency.
+- Fixed the homepage link in the footer to use HTTPS.
+- Added API functions, utility helpers, and proxy configuration for dispatcher integration.
+
 ## [0.2.1] - 2025-11-13
 
 - Enhanced search results UI: descriptions and author lists are now expandable, and OpenSearch scores for non-AI-ranked

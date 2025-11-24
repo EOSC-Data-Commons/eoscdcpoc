@@ -1,0 +1,81 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "runsOn": "https://w3id.org/ro/terms/test#runsOn"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "Galaxy Example Workflow",
+      "description": "This is an example of a workflow using the Galaxy platform.",
+      "license": "GNU General Public License v3.0",
+      "datePublished": "2025-05-06T14:35:47+00:00",
+      "mainEntity": {
+        "@id": "#workflow"
+      },
+      "runsOn": {
+        "@id": "#destination"
+      },
+      "hasPart": [
+        {
+          "@id": "#workflow"
+        },
+        {
+          "@id": "#textfile"
+        },
+        {
+          "@id": "#destination"
+        }
+      ]
+    },
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      }
+    },
+    {
+      "@id": "#workflow",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "name": "Example galaxy workflow",
+      "programmingLanguage": {
+        "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy"
+      },
+      "url": "https://dockstore.org/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Flaitanawe%2Fismb2024%2Fgalaxy_example/versions/main/PLAIN_GALAXY/descriptor//Galaxy-Workflow-reverse_file_galaxy_workflow.ga"
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy",
+      "@type": "ComputerLanguage",
+      "identifier": {
+        "@id": "https://galaxyproject.org/"
+      },
+      "name": "Galaxy",
+      "url": {
+        "@id": "https://galaxyproject.org/"
+      }
+    },
+    {
+      "@id": "#textfile",
+      "@type": "File",
+      "name": "simpletext_input",
+      "url": "https://example-files.online-convert.com/document/txt/example.txt",
+      "encodingFormat": "text/txt"
+    },
+    {
+      "@id": "#destination",
+      "@type": "Service",
+      "url": "https://usegalaxy.eu/"
+    }
+  ]
+}

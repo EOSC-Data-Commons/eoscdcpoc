@@ -1,8 +1,10 @@
 import type {BackendDataset} from "../types/commons.ts";
-import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon} from "lucide-react";
+import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, Rocket} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';
 import {useState} from 'react';
+import {useSearchParams} from 'react-router-dom';
+import {RepoLogo} from "./RepoLogo.tsx";
 
 interface SearchResultItemProps {
     hit: BackendDataset;
@@ -10,6 +12,8 @@ interface SearchResultItemProps {
 }
 
 export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProps) => {
+    const [searchParams] = useSearchParams();
+
     const cleanDescription = (html: string) => {
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -20,13 +24,28 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
     const [descExpanded, setDescExpanded] = useState(false);
     const [authorsExpanded, setAuthorsExpanded] = useState(false);
 
+    const handleRunDispatcher = () => {
+        // Open dispatcher run page in a new tab with dataset info
+        const params = new URLSearchParams();
+        params.set('datasetId', hit._id);
+        if (hit.title) {
+            params.set('title', hit.title);
+        }
+        // Preserve the search query for back navigation
+        const currentQuery = searchParams.get('q');
+        if (currentQuery) {
+            params.set('q', currentQuery);
+        }
+        window.open(`/dispatcher/run?${params.toString()}`, '_blank');
+    };
+
     const scorePercent = (hit.score || 0) * 100;
 
     // For research accuracy, only use official publication dates (Issued/Created), not metadata dates
     const getPublicationDate = (): string | null => {
         // First priority: root-level publicationDate field (if not null)
-        if (hit.publicationDate) {
-            return hit.publicationDate;
+        if (hit.publication_date) {
+            return hit.publication_date;
         }
 
         // Second priority: look for "Issued" date in _source.dates (official publication)
@@ -145,6 +164,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     </div>
                 )}
 
+
                 {publicationDate && (
                     <div className="flex items-center space-x-2">
                         <CalendarIcon className="h-4 w-4 text-gray-500 flex-shrink-0"/>
@@ -177,6 +197,13 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
             <div
                 className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-gray-100 gap-4 sm:gap-0">
                 <div className="flex space-x-4">
+                    <button
+                        onClick={handleRunDispatcher}
+                        aria-label={`Run dispatcher for ${hit.title}`}
+                        className="inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors cursor-pointer">
+                        <Rocket className="h-4 w-4"/>
+                        <span className="leading-none">Run</span>
+                    </button>
                     <a href={hit._id} target="_blank" rel="noopener noreferrer"
                        aria-label={`View dataset ${hit.title}`}
                        className="inline-flex items-center justify-center gap-1 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-colors">
@@ -185,9 +212,13 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     </a>
                     <CitationExport dataset={hit}/>
                 </div>
-                {isAiRanked && (
-                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
-                )}
+                <div className="flex items-center space-x-4">
+                    {hit._source._repo && <RepoLogo repo={hit._source._repo}/>}
+                    {isAiRanked && (
+                        <span
+                            className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
+                    )}
+                </div>
             </div>
         </div>
     );

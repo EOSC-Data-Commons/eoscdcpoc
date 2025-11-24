@@ -1,0 +1,115 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.1/context",
+  "@graph": [
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "datePublished": "2025-05-06T14:35:47+00:00",
+      "mainEntity": {
+        "@id": "#workflow"
+      },
+      "runsOn": {
+        "@id": "#destination"
+      },
+      "hasPart": [
+        {
+          "@id": "#workflow"
+        },
+        {
+          "@id": "#image-to-process"
+        },
+        {
+          "@id": "#stopwords"
+        },
+        {
+          "@id": "#destination"
+        }
+      ]
+    },
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "./"
+      },
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      }
+    },
+    {
+      "@id": "#workflow",
+      "@type": [
+        "File",
+        "SoftwareSourceCode",
+        "ComputationalWorkflow"
+      ],
+      "name": "OCR for a journal from DaSCH - PoC workflow",
+      "programmingLanguage": {
+        "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy"
+      },
+      "url": "https://dockstore.org/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Fbwalkowi%2Fgalaxy-workflow-ocr-test%2Fmain/versions/main/PLAIN_GALAXY/descriptor//galaxy-workflow-ocr-test-DaSCH.ga",
+      "description": "A workflow to show how material from DaSch can be processed in Galaxy. The example used is a optical character recognition of a German newspaper from DaSch which will be made machine-readable, cleaned, stripped of punctuation and visualised in a Wordcloud.",
+      "license": {
+        "@id": "https://creativecommons.org/licenses/by/4.0/legalcode"
+      },
+      "author": [
+        {
+          "@id": "#author-schneider"
+        },
+        {
+          "@id": "#author-nussbaum"
+        }
+      ]
+    },
+    {
+      "@id": "https://w3id.org/workflowhub/workflow-ro-crate#galaxy",
+      "@type": "ComputerLanguage",
+      "identifier": {
+        "@id": "https://galaxyproject.org/"
+      },
+      "name": "Galaxy",
+      "url": {
+        "@id": "https://galaxyproject.org/"
+      }
+    },
+    {
+      "@id": "#image-to-process",
+      "@type": "File",
+      "name": "Input Image",
+      "encodingFormat": "image/tiff",
+      "onedata:onezoneDomain": "demo.onedata.org",
+      "onedata:spaceId": "6e6b22d6f32b63db34fcfac53e52e233chd8ba",
+      "onedata:fileId": "00000000007EADF3736861726547756964233964613065396530393037303130393062356433623965356632643832353138636830386464233665366232326436663332623633646233346663666163353365353265323333636864386261233437656434633633333638393264396361626239316435636430623161663436636830343438",
+      "onedata:publicAccess": true
+    },
+    {
+      "@id": "#stopwords",
+      "@type": "File",
+      "name": "Upload Stopwords",
+      "encodingFormat": "text/txt",
+      "onedata:onezoneDomain": "demo.onedata.org",
+      "onedata:spaceId": "6e6b22d6f32b63db34fcfac53e52e233chd8ba",
+      "onedata:fileId": "00000000007E21F3736861726547756964233937316538386630666539393765336430353065386566363536363130376632636830386464233665366232326436663332623633646233346663666163353365353265323333636864386261233437656434633633333638393264396361626239316435636430623161663436636830343438",
+      "onedata:publicAccess": true
+    },
+    {
+      "@id": "#destination",
+      "@type": "Service",
+      "url": "https://usegalaxy.eu/"
+    },
+    {
+      "@id": "#author-schneider",
+      "@type": "Person",
+      "givenName": "Daniela",
+      "familyName": "Schneider",
+      "name": "Daniela Schneider"
+    },
+    {
+      "@id": "#author-nussbaum",
+      "@type": "Person",
+      "givenName": "Johaness",
+      "familyName": "Nussbaum",
+      "name": "Johaness Nussbaum"
+    }
+  ]
+}

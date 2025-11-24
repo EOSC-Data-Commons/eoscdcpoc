@@ -13,6 +13,12 @@ export default defineConfig(() => ({
                 target: 'http://127.0.0.1:8000',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
+            },
+            '/player-api': {
+                target: 'https://dev3.player.eosc-data-commons.eu',
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/player-api/, '')
             }
         }
     },
