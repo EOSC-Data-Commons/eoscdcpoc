@@ -49,12 +49,12 @@ Open Terminal (Mac) or Command Prompt (Windows) and run these commands one by on
 
 Clone the repository:
 ```bash
-git clone https://github.com/EOSC-Data-Commons/eoscdcpoc.git
+git clone https://github.com/EOSC-Data-Commons/matchmaker.git
 ```
 
 Navigate to the project folder:
 ```bash
-cd eoscdcpoc
+cd matchmaker
 ```
 
 Install dependencies:
@@ -100,13 +100,13 @@ If you prefer not to install Node.js and npm, you can run the frontend directly 
 You can pull the latest published image from GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
+docker pull ghcr.io/eosc-data-commons/matchmaker-frontend:latest
 ```
 
 Or pull a specific version (replace `<version>` with the version you want, e.g., `1.2.3`):
 
 ```bash
-docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:<version>
+docker pull ghcr.io/eosc-data-commons/matchmaker-frontend:<version>
 ```
 
 ### Run the Docker container
@@ -114,7 +114,7 @@ docker pull ghcr.io/eosc-data-commons/eoscdcpoc-frontend:<version>
 To run the frontend container and map it to your local port 5173:
 
 ```bash
-docker run -p 5173:80 ghcr.io/eosc-data-commons/eoscdcpoc-frontend:latest
+docker run -p 5173:80 ghcr.io/eosc-data-commons/matchmaker-frontend:latest
 ```
 
 - The app will be available at http://localhost:5173

@@ -48,7 +48,7 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
                         </p>
                         <p className="text-xs font-light text-eosc-gray mt-1">
                             <a
-                                href="https://github.com/EOSC-Data-Commons/eoscdcpoc/blob/main/CHANGELOG.md"
+                                href="https://github.com/EOSC-Data-Commons/matchmaker/blob/main/CHANGELOG.md"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={"hover:text-eosc-dark-blue transition-colors"}
