@@ -1,5 +1,5 @@
 import type {BackendDataset} from "../types/commons.ts";
-import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, Rocket, ArchiveIcon} from "lucide-react";
+import {CalendarIcon, UserIcon, ExternalLinkIcon, TagIcon, Rocket} from "lucide-react";
 import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';
 import {useState} from 'react';

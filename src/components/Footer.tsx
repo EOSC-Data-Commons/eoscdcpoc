@@ -65,7 +65,7 @@ export const Footer = ({translucent = false, className = ''}: FooterProps) => {
                         <a
                             target="_blank"
                             rel="noreferrer"
-                            href="http://www.eosc-data-commons.eu"
+                            href="https://www.eosc-data-commons.eu"
                             aria-label="Link to Homepage"
                             className="cursor-pointer mb-2"
                         >
