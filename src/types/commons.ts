@@ -31,6 +31,8 @@ export interface SearchHitSrcDate {
 export interface SearchHitSrc {
     doi?: string | null;
     url?: string | null;
+    _harvest_url?: string;
+    _repo?: string;
     titles: SearchHitSrcTitle[];
     descriptions: SearchHitSrcDescription[];
     publicationYear: string;
@@ -45,62 +47,17 @@ export interface BackendDataset {
     _source: SearchHitSrc;
     _score: number; //OpenSearch Score
     score?: number | null; //LLM Ranked Score
-    file_extensions?: string[] | null;
+    fileExtensions?: string[] | null;
+    relevantTools?: string[] | null;
     title?: string | null;
     description?: string | null;
-    publicationDate?: string | null;
+    publication_date?: string | null;
     creator?: string | null;
 }
 
 export interface BackendSearchResponse {
     hits: BackendDataset[];
     summary: string;
-}
-
-// Legacy Zenodo types (keeping for compatibility if needed)
-export interface ZenodoHit {
-    id: number;
-    created: string;
-    modified: string;
-    doi: string;
-    doi_url: string;
-    conceptrecid: string;
-    conceptdoi: string;
-    metadata: {
-        title: string;
-        doi: string;
-        publication_date: string;
-        description: string;
-        access_right: string;
-        creators: Array<{
-            name: string;
-            affiliation?: string;
-        }>;
-        custom?: {
-            [key: string]: unknown;
-        };
-        resource_type: {
-            title: string;
-            type: string;
-            subtype?: string;
-        };
-        license?: {
-            id: string;
-        };
-        relations?: unknown;
-    };
-}
-
-export interface ZenodoResponse {
-    hits: {
-        hits: ZenodoHit[];
-        total: number;
-    };
-    links: {
-        self: string;
-        next?: string;
-        prev?: string;
-    };
 }
 
 export interface AggregationBucket {
