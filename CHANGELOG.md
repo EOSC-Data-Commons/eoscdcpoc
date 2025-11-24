@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2025-11-24
+
+- Renamed repository to `EOSC-Data-Commons/matchmaker` and updated all in-app links, Docker image names, and
+  documentation to use the new GitHub and GHCR locations.
+
 ## [0.3.0] - 2025-11-24
 
 - Integrated EOSC Player Dispatcher, allowing users to run analyses on datasets directly from search results.
