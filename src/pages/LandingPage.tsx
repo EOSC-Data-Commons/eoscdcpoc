@@ -4,6 +4,7 @@ import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 import {Footer} from "../components/Footer";
 import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
 import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
+import summaryRepoImage from '@/assets/SummaryRepo_24Nov25.png';
 
 export const LandingPage = () => {
     const navigate = useNavigate();
@@ -106,6 +107,28 @@ export const LandingPage = () => {
                             </div>
                         </div>
 
+                        {/* Statistics Section */}
+                        <div className="mb-12">
+                            <h3 className="text-2xl sm:text-3xl font-light text-eosc-text text-left mb-8 ml-4">
+                                Dataset Statistics
+                            </h3>
+                            <div className="px-4">
+                                <div
+                                    className="bg-white border border-eosc-border rounded-xl p-4 sm:p-8 overflow-x-auto">
+                                    <div className="min-w-[600px] lg:min-w-0">
+                                        <img
+                                            src={summaryRepoImage}
+                                            alt="Sum of Datasets Number by Repository and Subject"
+                                            className="w-full h-auto"
+                                        />
+                                    </div>
+                                    <p className="text-xs text-gray-500 text-center mt-3 sm:hidden">
+                                        ← Scroll to view full chart →
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Tools Section */}
                         <div className="mb-12">
                             <h3 className="text-2xl sm:text-3xl font-light text-eosc-text text-left mb-8 ml-4">
@@ -125,6 +148,7 @@ export const LandingPage = () => {
                                 ))}
                             </div>
                         </div>
+
                         {/* Features Section  */}
                         <div className="py-8">
                             <div className="flex flex-wrap justify-center items-center gap-8 px-4">

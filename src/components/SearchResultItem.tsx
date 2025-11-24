@@ -4,6 +4,7 @@ import {ProportionalStar} from './ProportionalStar';
 import {CitationExport} from './CitationExport';
 import {useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
+import {RepoLogo} from "./RepoLogo.tsx";
 
 interface SearchResultItemProps {
     hit: BackendDataset;
@@ -43,8 +44,8 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
     // For research accuracy, only use official publication dates (Issued/Created), not metadata dates
     const getPublicationDate = (): string | null => {
         // First priority: root-level publicationDate field (if not null)
-        if (hit.publicationDate) {
-            return hit.publicationDate;
+        if (hit.publication_date) {
+            return hit.publication_date;
         }
 
         // Second priority: look for "Issued" date in _source.dates (official publication)
@@ -163,6 +164,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     </div>
                 )}
 
+
                 {publicationDate && (
                     <div className="flex items-center space-x-2">
                         <CalendarIcon className="h-4 w-4 text-gray-500 flex-shrink-0"/>
@@ -210,9 +212,13 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
                     </a>
                     <CitationExport dataset={hit}/>
                 </div>
-                {isAiRanked && (
-                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
-                )}
+                <div className="flex items-center space-x-4">
+                    {hit._source._repo && <RepoLogo repo={hit._source._repo}/>}
+                    {isAiRanked && (
+                        <span
+                            className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI-powered search</span>
+                    )}
+                </div>
             </div>
         </div>
     );

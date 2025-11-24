@@ -39,7 +39,7 @@ const extractDOI = (url: string): string | undefined => {
 };
 
 export const generateBibTeX = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publicationDate);
+    const year = extractYear(ds.publication_date);
     const keyBase = `${firstCreatorLastName(ds._source.creators.map(creator => creator.creatorName))}_${year}_${ds._id}`.replace(/[^A-Za-z0-9_]/g, "");
     const authors = formatAuthorsBibTeX(ds._source.creators.map(creator => creator.creatorName));
     const doi = extractDOI(ds._id);
@@ -62,8 +62,8 @@ export const generateBibTeX = (ds: BackendDataset): string => {
 };
 
 export const generateRIS = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publicationDate);
-    const date = new Date(ds.publicationDate);
+    const year = extractYear(ds.publication_date);
+    const date = new Date(ds.publication_date);
     const datePart = isNaN(date.getTime()) ? '' : `${date.getUTCFullYear()}/${String(date.getUTCMonth()+1).padStart(2,'0')}/${String(date.getUTCDate()).padStart(2,'0')}`;
     const doi = extractDOI(ds._id);
     const lines: string[] = [];
@@ -79,7 +79,7 @@ export const generateRIS = (ds: BackendDataset): string => {
 };
 
 export const generateEndNote = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publicationDate);
+    const year = extractYear(ds.publication_date);
     const doi = extractDOI(ds._id);
     const lines: string[] = [];
     lines.push('%0 Dataset');
@@ -93,8 +93,8 @@ export const generateEndNote = (ds: BackendDataset): string => {
 };
 
 export const generateCSLJSON = (ds: BackendDataset): string => {
-    const year = extractYear(ds.publicationDate);
-    const date = new Date(ds.publicationDate);
+    const year = extractYear(ds.publication_date);
+    const date = new Date(ds.publication_date);
     const dateParts = isNaN(date.getTime()) ? undefined : [[date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()]];
     const authors = ds._source.creators?.map(c => ({ literal: c.creatorName.trim() })).filter(a => a.literal.length);
     const obj: Record<string, unknown> = {
@@ -116,7 +116,7 @@ export const generateCSLJSON = (ds: BackendDataset): string => {
 
 export const generateRefWorks = (ds: BackendDataset): string => {
     // RefWorks Tagged Format (simplified)
-    const year = extractYear(ds.publicationDate);
+    const year = extractYear(ds.publication_date);
     const lines: string[] = [];
     lines.push('RT Dataset');
     lines.push('SR Electronic');
