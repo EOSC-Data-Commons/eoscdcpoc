@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.3] - 2025-11-25
+
+- Updated terminology throughout the application: replaced "analysis" references with "Virtual Research Environment (
+  VRE)" to accurately reflect that the VRE is being prepared to run analyses, not running them directly.
+
 ## [0.3.1] - 2025-11-24
 
 - Renamed repository to `EOSC-Data-Commons/matchmaker` and updated all in-app links, Docker image names, and
