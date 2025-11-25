@@ -94,12 +94,12 @@ export const pollTaskStatus = async (
 
             switch (statusResult.status) {
                 case 'SUCCESS':
-                    onStatusUpdate('SUCCESS', 'Analysis completed successfully!', statusResult.result);
+                    onStatusUpdate('SUCCESS', 'Virtual Research Environment is ready!', statusResult.result);
                     onComplete(statusResult.result || null);
                     return;
 
                 case 'FAILURE': {
-                    const errorMsg = `Analysis failed: ${statusResult.error || 'Unknown error'}`;
+                    const errorMsg = `Virtual Research Environment setup failed: ${statusResult.error || 'Unknown error'}`;
                     onStatusUpdate('FAILURE', errorMsg);
                     onError(errorMsg);
                     return;

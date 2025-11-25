@@ -28,7 +28,7 @@ export const DispatcherRunPage = () => {
 
     // Step management
     const [currentStep, setCurrentStep] = useState<StepType>('select-analysis');
-    const [selectedAnalysis, setSelectedAnalysis] = useState<DispatcherType>(null);
+    const [selectedVRE, setSelectedVRE] = useState<DispatcherType>(null);
 
     // File management
     const [files, setFiles] = useState<FileMetrixFile[]>([]);
@@ -44,16 +44,16 @@ export const DispatcherRunPage = () => {
 
     const datasetTitle = searchParams.get('title');
 
-    // Handle analysis selection
-    const handleAnalysisSelect = async (analysis: DispatcherType) => {
-        if (!analysis) return;
+    // Handle VRE selection
+    const handleVRESelect = async (vre: DispatcherType) => {
+        if (!vre) return;
 
-        setSelectedAnalysis(analysis);
+        setSelectedVRE(vre);
         setLoadingFiles(true);
         setFilesError(null);
 
         try {
-            const config = DISPATCHER_CONFIGS[analysis];
+            const config = DISPATCHER_CONFIGS[vre];
             const data = await fetchFilesFromMetrix(config.datasetHandle);
             setFiles(data.files);
             setCurrentStep('map-files');
@@ -93,26 +93,26 @@ export const DispatcherRunPage = () => {
 
     // Handle final submission
     const handleSubmit = async () => {
-        if (!selectedAnalysis) return;
+        if (!selectedVRE) return;
 
         try {
             setCurrentStep('submitting');
-            setStatusMessage('Preparing analysis metadata...');
+            setStatusMessage('Preparing Virtual Research Environment metadata...');
             setStatusType('info');
 
             const metadata = prepareDispatcherMetadata(
-                selectedAnalysis,
+                selectedVRE,
                 fileParameterMappings,
                 files,
                 datasetTitle
             );
 
-            setStatusMessage('Submitting analysis...');
+            setStatusMessage('Submitting to Virtual Research Environment...');
             const result = await submitMetadataToDispatcher(metadata);
 
             if (result.task_id) {
                 setTaskId(result.task_id);
-                setStatusMessage('Analysis submitted! Monitoring task progress...');
+                setStatusMessage('Virtual Research Environment submitted! Monitoring task progress...');
                 setStatusType('info');
                 setCurrentStep('monitoring');
 
@@ -133,7 +133,7 @@ export const DispatcherRunPage = () => {
                 );
             }
         } catch (error) {
-            console.error('Analysis submission error:', error);
+            console.error('Virtual Research Environment submission error:', error);
             const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
             setStatusMessage(`Error: ${errorMessage}`);
             setStatusType('error');
@@ -168,13 +168,14 @@ export const DispatcherRunPage = () => {
         }
     };
 
-    // Render analysis selection step
-    const renderAnalysisSelection = () => (
+    // Render VRE selection step
+    const renderVRESelection = () => (
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <div className="mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Select Analysis</h2>
-                <p className="text-sm sm:text-base text-gray-600">Choose the analysis you want to run on your
-                    dataset</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Select Virtual Research
+                    Environment</h2>
+                <p className="text-sm sm:text-base text-gray-600">Choose the Virtual Research Environment you want to
+                    use with your dataset</p>
                 {datasetTitle && (
                     <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
                         <p className="text-xs sm:text-sm font-medium text-gray-700">Dataset:</p>
@@ -187,7 +188,7 @@ export const DispatcherRunPage = () => {
                 {(Object.entries(DISPATCHER_CONFIGS) as [DispatcherType, typeof DISPATCHER_CONFIGS[DispatcherType]][]).map(([key, config]) => (
                     <button
                         key={key}
-                        onClick={() => handleAnalysisSelect(key)}
+                        onClick={() => handleVRESelect(key)}
                         disabled={loadingFiles}
                         className="p-4 sm:p-6 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -209,7 +210,7 @@ export const DispatcherRunPage = () => {
                 <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-red-50 rounded-lg border border-red-200">
                     <p className="text-sm sm:text-base text-red-900 break-words">{filesError}</p>
                     <button
-                        onClick={() => selectedAnalysis && handleAnalysisSelect(selectedAnalysis)}
+                        onClick={() => selectedVRE && handleVRESelect(selectedVRE)}
                         className="mt-2 sm:mt-3 text-xs sm:text-sm text-red-700 underline"
                     >
                         Try again
@@ -230,22 +231,23 @@ export const DispatcherRunPage = () => {
 
     // Render file mapping step
     const renderFileMapping = () => {
-        if (!selectedAnalysis) return null;
+        if (!selectedVRE) return null;
 
-        const config = DISPATCHER_CONFIGS[selectedAnalysis];
-        const allParametersMapped = areAllParametersMapped(selectedAnalysis, fileParameterMappings);
+        const config = DISPATCHER_CONFIGS[selectedVRE];
+        const allParametersMapped = areAllParametersMapped(selectedVRE, fileParameterMappings);
 
         return (
             <div className="max-w-5xl mx-auto px-4 sm:px-6">
                 <div className="mb-4 sm:mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Map Files to Analysis
-                        Parameters</h2>
-                    <p className="text-sm sm:text-base text-gray-600">Assign each file to an analysis parameter. Each
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Map Files to VRE Parameters</h2>
+                    <p className="text-sm sm:text-base text-gray-600">Assign each file to a Virtual Research Environment
+                        parameter. Each
                         parameter must have
                         exactly one file.</p>
 
                     <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Selected Analysis:</p>
+                        <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Selected Virtual Research
+                            Environment:</p>
                         <p className="text-sm sm:text-base text-gray-900 font-semibold break-words">{config.name}</p>
                     </div>
                 </div>
@@ -361,13 +363,13 @@ export const DispatcherRunPage = () => {
                     <button
                         onClick={() => {
                             setCurrentStep('select-analysis');
-                            setSelectedAnalysis(null);
+                            setSelectedVRE(null);
                             setFiles([]);
                             setFileParameterMappings({});
                         }}
                         className="text-sm sm:text-base text-blue-600 hover:text-blue-700 font-medium text-center sm:text-left"
                     >
-                        ← Change Analysis
+                        ← Change Virtual Research Environment
                     </button>
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
@@ -381,7 +383,7 @@ export const DispatcherRunPage = () => {
                             disabled={!allParametersMapped}
                             className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                         >
-                            Submit Analysis
+                            Submit to VRE
                         </button>
                     </div>
                 </div>
@@ -398,13 +400,14 @@ export const DispatcherRunPage = () => {
                         {getStatusIcon()}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h2 className="text-lg sm:text-xl font-semibold mb-2">Analysis Status</h2>
+                        <h2 className="text-lg sm:text-xl font-semibold mb-2">Virtual Research Environment Status</h2>
                         <p className="text-base sm:text-lg mb-4 break-words">{statusMessage}</p>
 
-                        {selectedAnalysis && (
+                        {selectedVRE && (
                             <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
-                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Analysis:</p>
-                                <p className="text-sm sm:text-base text-gray-900 break-words">{DISPATCHER_CONFIGS[selectedAnalysis].name}</p>
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1">Virtual Research
+                                    Environment:</p>
+                                <p className="text-sm sm:text-base text-gray-900 break-words">{DISPATCHER_CONFIGS[selectedVRE].name}</p>
                             </div>
                         )}
 
@@ -424,14 +427,15 @@ export const DispatcherRunPage = () => {
 
                         {taskResult && taskResult.url && (
                             <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-white rounded border">
-                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Analysis Ready!</p>
-                                <p className="text-xs sm:text-sm text-gray-600 mb-3">Your analysis is ready to view in
-                                    Galaxy.</p>
+                                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2">Virtual Research
+                                    Environment is Ready!</p>
+                                <p className="text-xs sm:text-sm text-gray-600 mb-3">Your Virtual Research Environment
+                                    is ready to run your analysis.</p>
                                 <button
                                     onClick={() => window.open(taskResult.url, '_blank', 'noopener,noreferrer')}
                                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 transition-colors cursor-pointer"
                                 >
-                                    Take me to Galaxy →
+                                    Open Virtual Research Environment →
                                 </button>
                             </div>
                         )}
@@ -448,7 +452,7 @@ export const DispatcherRunPage = () => {
                                 <button
                                     onClick={() => {
                                         setCurrentStep('select-analysis');
-                                        setSelectedAnalysis(null);
+                                        setSelectedVRE(null);
                                         setFiles([]);
                                         setFileParameterMappings({});
                                         setTaskId(null);
@@ -488,7 +492,7 @@ export const DispatcherRunPage = () => {
             </header>
 
             <main className="flex-1 container mx-auto py-4 sm:py-6 md:py-8">
-                {currentStep === 'select-analysis' && renderAnalysisSelection()}
+                {currentStep === 'select-analysis' && renderVRESelection()}
                 {currentStep === 'map-files' && renderFileMapping()}
                 {(currentStep === 'submitting' || currentStep === 'monitoring') && renderMonitoring()}
             </main>
