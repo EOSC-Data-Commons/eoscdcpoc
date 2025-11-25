@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.3] - 2025-11-25
+## [0.3.2] - 2025-11-25
 
 - Updated terminology throughout the application: replaced "analysis" references with "Virtual Research Environment (
   VRE)" to accurately reflect that the VRE is being prepared to run analyses, not running them directly.
