@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.3] - 2025-11-26
+
+- Implemented a standardized timeout mechanism for all backend API calls to improve application reliability and provide
+  clearer error messages when services are unresponsive.
+
 ## [0.3.2] - 2025-11-25
 
 - Updated terminology throughout the application: replaced "analysis" references with "Virtual Research Environment (
