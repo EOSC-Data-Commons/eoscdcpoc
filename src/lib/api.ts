@@ -1,5 +1,5 @@
 import {BackendSearchResponse} from '../types/commons';
-import {logError} from './utils.ts';
+import {logError, fetchWithTimeout} from './utils.ts';
 
 // --- API HELPERS ---
 export const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || '';
@@ -34,7 +34,8 @@ export interface SSEEventHandler {
 export const searchWithBackend = async (
     query: string,
     model: string = 'einfracz/gpt-oss-120b',
-    handlers: SSEEventHandler
+    handlers: SSEEventHandler,
+    timeoutMs: number = 60000 // Default 1 minute timeout
 ): Promise<BackendSearchResponse> => {
     const requestBody: SearchRequest = {
         messages: [{ role: 'user', content: query }],
@@ -42,17 +43,21 @@ export const searchWithBackend = async (
     };
 
     try {
-        const response = await fetch(`${BACKEND_API_URL}/chat`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'text/event-stream',
-                'Cache-Control': 'no-cache',
-                'X-Accel-Buffering': 'no' // Disable buffering for Nginx proxies
+        const response = await fetchWithTimeout(
+            `${BACKEND_API_URL}/chat`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                    'X-Accel-Buffering': 'no' // Disable buffering for Nginx proxies
+                },
+                body: JSON.stringify(requestBody),
+                cache: 'no-store'
             },
-            body: JSON.stringify(requestBody),
-            cache: 'no-store'
-        });
+            timeoutMs
+        );
 
         if (!response.ok) throw new Error(`Error sending the request: ${response.status}`);
         // if (!response.headers.get('content-type')?.includes('text/event-stream')) return response.json();

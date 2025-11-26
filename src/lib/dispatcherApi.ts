@@ -6,6 +6,7 @@ import {
     DispatcherResult,
     TaskStatus
 } from '../types/dispatcher';
+import {fetchWithTimeout} from './utils';
 
 // Use proxy in development to avoid CORS issues
 const API_BASE = import.meta.env.DEV ? '/player-api' : 'https://dev3.player.eosc-data-commons.eu';
@@ -15,8 +16,15 @@ const FILEMETRIX_BASE = 'https://filemetrix.labs.dansdemo.nl/api/v1';
 /**
  * Fetch files from FileMetrix API for a given dataset handle
  */
-export const fetchFilesFromMetrix = async (datasetHandle: string): Promise<FileMetrixResponse> => {
-    const response = await fetch(`${FILEMETRIX_BASE}/${encodeURIComponent(datasetHandle)}`);
+export const fetchFilesFromMetrix = async (
+    datasetHandle: string,
+    timeoutMs: number = 60000 // Default 1 minute timeout
+): Promise<FileMetrixResponse> => {
+    const response = await fetchWithTimeout(
+        `${FILEMETRIX_BASE}/${encodeURIComponent(datasetHandle)}`,
+        {},
+        timeoutMs
+    );
 
     if (!response.ok) {
         throw new Error(`Failed to fetch files: ${response.status}`);
@@ -28,16 +36,23 @@ export const fetchFilesFromMetrix = async (datasetHandle: string): Promise<FileM
 /**
  * Submit metadata to the dispatcher
  */
-export const submitMetadataToDispatcher = async (metadata: unknown): Promise<{ task_id: string }> => {
+export const submitMetadataToDispatcher = async (
+    metadata: unknown,
+    timeoutMs: number = 60000 // Default 1 minute timeout
+): Promise<{ task_id: string }> => {
     console.log('Submitting metadata:', JSON.stringify(metadata, null, 2));
 
-    const response = await fetch(`${API_BASE}${METADATA_ENDPOINT}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    const response = await fetchWithTimeout(
+        `${API_BASE}${METADATA_ENDPOINT}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(metadata)
         },
-        body: JSON.stringify(metadata)
-    });
+        timeoutMs
+    );
 
     console.log('Response status:', response.status);
 
@@ -60,13 +75,20 @@ export const submitMetadataToDispatcher = async (metadata: unknown): Promise<{ t
 /**
  * Check task status from dispatcher
  */
-export const checkTaskStatus = async (taskId: string): Promise<TaskStatusResponse> => {
-    const response = await fetch(`${API_BASE}/anon_requests/${taskId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+export const checkTaskStatus = async (
+    taskId: string,
+    timeoutMs: number = 60000 // Default 30 seconds timeout for status checks
+): Promise<TaskStatusResponse> => {
+    const response = await fetchWithTimeout(
+        `${API_BASE}/anon_requests/${taskId}`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        },
+        timeoutMs
+    );
 
     if (!response.ok) {
         throw new Error(`Status check failed: ${response.status}`);
