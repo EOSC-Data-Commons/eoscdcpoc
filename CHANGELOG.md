@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.3.5] - 2025-11-27
 
-- Added PNG favicon for improved cross-browser compatibility, particularly fixing favicon display issues in Firefox.
+- Fixed favicon not displaying across all browsers and platforms
 
 ## [0.3.4] - 2025-11-27
 
