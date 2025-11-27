@@ -1,13 +1,27 @@
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 import {SearchInput} from "../components/SearchInput";
 import {AlphaDisclaimer} from "../components/AlphaDisclaimer";
 import {Footer} from "../components/Footer";
+import {EasterEgg} from "../components/EasterEgg";
 import dataCommonsIconBlue from '@/assets/data-commons-icon-blue.svg';
 import eoscLogo from '@/assets/logo-eosc-data-commons.svg';
 import summaryRepoImage from '@/assets/SummaryRepo_24Nov25.png';
 
 export const LandingPage = () => {
     const navigate = useNavigate();
+    const [logoClickCount, setLogoClickCount] = useState(0);
+    const [showEasterEgg, setShowEasterEgg] = useState(false);
+
+    const handleLogoClick = () => {
+        const newCount = logoClickCount + 1;
+        setLogoClickCount(newCount);
+
+        if (newCount === 7) {
+            setShowEasterEgg(true);
+            setLogoClickCount(0); // Reset counter
+        }
+    };
 
     const handleSearch = (query: string, model: string) => {
         navigate(`/search?q=${encodeURIComponent(query)}&model=${encodeURIComponent(model)}`);
@@ -40,6 +54,7 @@ export const LandingPage = () => {
     return (
         <div className="min-h-screen bg-eosc-bg flex flex-col items-center px-4 relative">
             <AlphaDisclaimer/>
+            <EasterEgg active={showEasterEgg} onComplete={() => setShowEasterEgg(false)}/>
             <header className="w-full flex justify-between items-center p-4 sm:p-6">
                 <img
                     src={dataCommonsIconBlue}
@@ -60,7 +75,12 @@ export const LandingPage = () => {
                         <img
                             src={eoscLogo}
                             alt="EOSC Data Commons"
-                            className="w-full max-w-lg h-auto"
+                            className="w-full max-w-lg h-auto cursor-pointer hover:opacity-90 active:opacity-80 transition-opacity select-none touch-manipulation"
+                            onClick={handleLogoClick}
+                            onTouchEnd={(e) => {
+                                e.preventDefault();
+                                handleLogoClick();
+                            }}
                         />
                     </div>
 

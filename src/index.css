@@ -98,3 +98,34 @@
         border-color: hsl(var(--border));
     }
 }
+
+@keyframes fall {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 100vh, 0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-fall {
+    animation: fall linear forwards;
+    will-change: transform, opacity;
+}
+
+.animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+    will-change: transform;
+}
+

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.4] - 2025-11-27
+
+- Minor UI enhancements and interaction improvements on the landing page.
+
 ## [0.3.3] - 2025-11-26
 
 - Implemented a standardized timeout mechanism for all backend API calls to improve application reliability and provide
