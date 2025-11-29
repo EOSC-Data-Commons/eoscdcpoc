@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.6] - 2025-11-28
+
+- Improved favicon handling: ensured favicon is copied to the correct output directory and referenced with a non-hashed
+  path for consistent browser support (including Firefox and direct /favicon.ico access).
+
 ## [0.3.5] - 2025-11-27
 
 - Fixed favicon not displaying across all browsers and platforms
