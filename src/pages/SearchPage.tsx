@@ -42,7 +42,7 @@ export const SearchPage = () => {
                     setInitialResults(data);
                     console.log("Initial search data received:", data);
                     setLoading(false);
-                    setIsProcessing(true);
+                    setIsProcessing(data.hits && data.hits.length > 0);
                 },
                 onRerankedData: (data) => {
                     setRerankedResults(data);
