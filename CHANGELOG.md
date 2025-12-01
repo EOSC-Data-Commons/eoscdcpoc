@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.7] - 2025-12-01
+
+- Fixed the issue where the "AI is analyzing" message would persist when no search results were found.
+
 ## [0.3.6] - 2025-11-28
 
 - Improved favicon handling: ensured favicon is copied to the correct output directory and referenced with a non-hashed
