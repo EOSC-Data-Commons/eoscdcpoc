@@ -9,7 +9,7 @@ import {
 import {fetchWithTimeout} from './utils';
 
 // Use proxy in development to avoid CORS issues
-const API_BASE = import.meta.env.DEV ? '/player-api' : 'https://dev3.player.eosc-data-commons.eu';
+const API_BASE = import.meta.env.DEV ? '/player-api' : 'https://dev1.player.eosc-data-commons.eu';
 const METADATA_ENDPOINT = '/anon_requests/metadata_rocrate/';
 const FILEMETRIX_BASE = 'https://filemetrix.labs.dansdemo.nl/api/v1';
 

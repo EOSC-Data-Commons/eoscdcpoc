@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.8] - 2025-12-03
+
+- Updated Dispatcher API endpoint: switched from dev3 to dev1.
+
 ## [0.3.7] - 2025-12-01
 
 - Fixed the issue where the "AI is analyzing" message would persist when no search results were found.
