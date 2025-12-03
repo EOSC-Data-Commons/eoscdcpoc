@@ -1,10 +1,10 @@
 ![EOSC Data Commons](src/assets/data-commons-logo.png)
 
+[![License: MIT](https://img.shields.io/badge/GitHub-MIT-informational)](LICENSE)
+
 # EOSC Data Commons Frontend
 
 A web application for searching scientific datasets using natural language queries. This application works with the [EOSC Data Commons MCP server](https://github.com/EOSC-Data-Commons/data-commons-mcp) to help you discover scientific datasets through AI-powered search.
-
-> **Note**: You would currently be using the free version of Mistral LLM, so search results may take 10–15 seconds to complete. Please be patient! :)
 
 ## What You Need First
 
