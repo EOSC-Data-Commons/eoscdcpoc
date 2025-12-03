@@ -15,7 +15,7 @@ export default defineConfig(() => ({
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
             '/player-api': {
-                target: 'https://dev3.player.eosc-data-commons.eu',
+                target: 'https://dev1.player.eosc-data-commons.eu',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/player-api/, '')
