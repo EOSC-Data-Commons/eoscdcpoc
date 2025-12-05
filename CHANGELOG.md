@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.9] - 2025-12-05
+
+- Integrated DOI.org API for citation fetching: citations are now retrieved from official DOI metadata when available,
+  with local fallback
 ## [0.3.8] - 2025-12-03
 
 - Updated Dispatcher API endpoint: switched from dev3 to dev1.
