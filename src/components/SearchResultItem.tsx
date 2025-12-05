@@ -25,7 +25,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
     const [authorsExpanded, setAuthorsExpanded] = useState(false);
 
     const handleRunDispatcher = () => {
-        // Open dispatcher run page in a new tab with dataset info
+        // Open the dispatcher run page in a new tab with dataset info
         const params = new URLSearchParams();
         params.set('datasetId', hit._id);
         if (hit.title) {
@@ -41,26 +41,10 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
 
     const scorePercent = (hit.score || 0) * 100;
 
-    // For research accuracy, only use official publication dates (Issued/Created), not metadata dates
     const getPublicationDate = (): string | null => {
         // First priority: root-level publicationDate field (if not null)
         if (hit.publication_date) {
             return hit.publication_date;
-        }
-
-        // Second priority: look for "Issued" date in _source.dates (official publication)
-        if (hit._source.dates && hit._source.dates.length > 0) {
-            const issuedDate = hit._source.dates.find(d => d.dateType === 'Issued');
-            if (issuedDate) return issuedDate.date;
-
-            // Third priority: "Available" date (when it became publicly available)
-            const availableDate = hit._source.dates.find(d => d.dateType === 'Available');
-            if (availableDate) return availableDate.date;
-
-            // Fourth priority: "Created" date (when content was created)
-            // This is important for unpublished datasets - the creation date is citation-worthy
-            const createdDate = hit._source.dates.find(d => d.dateType === 'Created');
-            if (createdDate) return createdDate.date;
         }
 
         // Last resort: use publicationYear if available (show just the year)
@@ -82,7 +66,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
         return new Date(dateStr).toISOString().slice(0, 10).replace(/-/g, '.');
     };
 
-    // Description compute
+
     const fullDescription = cleanDescription(hit.description || '');
     const descLimit = 300;
     const isDescTruncated = fullDescription.length > descLimit;
@@ -90,7 +74,7 @@ export const SearchResultItem = ({hit, isAiRanked = false}: SearchResultItemProp
         ? fullDescription
         : fullDescription.slice(0, descLimit) + '...';
 
-    // Authors compute
+
     const creators = hit._source.creators || [];
     const baseAuthorsToShow = 3;
     const showAllAuthors = authorsExpanded || creators.length <= baseAuthorsToShow;

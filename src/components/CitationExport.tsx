@@ -1,37 +1,35 @@
-import {useState, useCallback, useRef, useEffect, useMemo} from 'react';
+import {useState, useCallback, useRef, useEffect} from 'react';
 import type {BackendDataset} from '../types/commons';
-import {generateBibTeX, generateRIS, generateEndNote, generateCSLJSON, generateRefWorks} from '../lib/citation';
-import {BookOpenIcon, ClipboardIcon, CheckIcon, DownloadIcon} from 'lucide-react';
+import {generateBibTeX, generateRIS, generateCSLJSON, extractDOI, fetchDOICitation} from '../lib/citation';
+import {BookOpenIcon, ClipboardIcon, CheckIcon, DownloadIcon, Loader2Icon} from 'lucide-react';
 
 interface CitationExportProps {
     dataset: BackendDataset;
 }
 
-type CitationFormat = 'bibtex' | 'ris' | 'endnote' | 'csljson' | 'refworks';
+type CitationFormat = 'bibtex' | 'ris' | 'csljson';
 
 const LABELS: Record<CitationFormat, { label: string; ext: string; mime: string }> = {
     bibtex: {label: 'BibTeX', ext: 'bib', mime: 'application/x-bibtex'},
     ris: {label: 'RIS', ext: 'ris', mime: 'application/x-research-info-systems'},
-    endnote: {label: 'EndNote', ext: 'enw', mime: 'application/x-endnote-refer'},
-    csljson: {label: 'CSL JSON', ext: 'json', mime: 'application/vnd.citationstyles.csl+json'},
-    refworks: {label: 'RefWorks', ext: 'rwk', mime: 'text/plain'}
+    csljson: {label: 'CSL JSON', ext: 'json', mime: 'application/vnd.citationstyles.csl+json'}
 };
 
 const GENERATORS: Record<CitationFormat, (d: BackendDataset) => string> = {
     bibtex: generateBibTeX,
     ris: generateRIS,
-    endnote: generateEndNote,
-    csljson: generateCSLJSON,
-    refworks: generateRefWorks
+    csljson: generateCSLJSON
 };
 
 export const CitationExport = ({dataset}: CitationExportProps) => {
     const [open, setOpen] = useState(false);
     const [format, setFormat] = useState<CitationFormat>('bibtex');
     const [copied, setCopied] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [citation, setCitation] = useState<string>('');
+    const [usingDOI, setUsingDOI] = useState(false);
     const panelRef = useRef<HTMLDivElement | null>(null);
 
-    const citation = useMemo(() => GENERATORS[format](dataset), [dataset, format]);
 
     const closeOnOutside = useCallback((e: MouseEvent) => {
         if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
@@ -45,6 +43,37 @@ export const CitationExport = ({dataset}: CitationExportProps) => {
             return () => document.removeEventListener('mousedown', closeOnOutside);
         }
     }, [open, closeOnOutside]);
+
+    // Fetch citation from DOI API or generate locally
+    useEffect(() => {
+        const generateCitation = async () => {
+            setLoading(true);
+            setUsingDOI(false);
+
+            // Try to extract DOI from dataset
+            const doi = extractDOI(dataset._id) || dataset._source.doi;
+
+            if (doi) {
+                const doiCitation = await fetchDOICitation(doi, format);
+                if (doiCitation) {
+                    setCitation(doiCitation);
+                    setUsingDOI(true);
+                    setLoading(false);
+                    return;
+                }
+            }
+
+            // Fallback to local generation if DOI fetch fails or no DOI available
+            const localCitation = GENERATORS[format](dataset);
+            setCitation(localCitation);
+            setUsingDOI(false);
+            setLoading(false);
+        };
+
+        if (open) {
+            generateCitation();
+        }
+    }, [dataset, format, open]);
 
     const handleCopy = async () => {
         try {
@@ -108,8 +137,9 @@ export const CitationExport = ({dataset}: CitationExportProps) => {
                         <button
                             type="button"
                             onClick={handleCopy}
+                            disabled={loading}
                             aria-label="Copy citation"
-                            className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium"
+                            className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {copied ? <CheckIcon className="h-3 w-3"/> : <ClipboardIcon className="h-3 w-3"/>}
                             <span className="ml-1">{copied ? 'Copied' : 'Copy'}</span>
@@ -117,17 +147,36 @@ export const CitationExport = ({dataset}: CitationExportProps) => {
                         <button
                             type="button"
                             onClick={handleDownload}
+                            disabled={loading}
                             aria-label="Download citation file"
-                            className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium"
+                            className="inline-flex items-center rounded bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <DownloadIcon className="h-3 w-3"/>
                             <span className="ml-1">Download</span>
                         </button>
                     </div>
-                    <pre
-                        className="max-h-48 overflow-auto text-[11px] leading-snug bg-gray-50 border border-gray-100 rounded p-2 whitespace-pre-wrap text-gray-600 font-mono">{citation}</pre>
-                    <div className="pt-2 text-[10px] text-gray-400">Generated automatically; please verify before use.
-                    </div>
+                    {loading ? (
+                        <div className="flex items-center justify-center py-8">
+                            <Loader2Icon className="h-6 w-6 text-blue-600 animate-spin"/>
+                            <span className="ml-2 text-sm text-gray-600">Loading citation...</span>
+                        </div>
+                    ) : (
+                        <>
+                            <pre
+                                className="max-h-48 overflow-auto text-[11px] leading-snug bg-gray-50 border border-gray-100 rounded p-2 whitespace-pre-wrap text-gray-600 font-mono">{citation}</pre>
+                            <div className="pt-2 flex items-center justify-between">
+                                {usingDOI ? (
+                                    <span className="text-[10px] text-green-600 font-medium">
+                                        Fetched from official DOI metadata
+                                    </span>
+                                ) : (
+                                    <span className="text-[10px] text-gray-400">
+                                        Generated automatically; please verify before use.
+                                    </span>
+                                )}
+                            </div>
+                        </>
+                    )}
                 </div>
             )}
         </div>
