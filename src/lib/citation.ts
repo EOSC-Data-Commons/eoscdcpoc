@@ -1,4 +1,4 @@
-import type { BackendDataset } from "../types/commons";
+import type {BackendDataset} from "../types/commons";
 
 const sanitize = (value: string) => value.replace(/[{}]/g, "");
 
@@ -23,7 +23,7 @@ const formatAuthorsBibTeX = (creators: string[]) => {
     return creators?.map(c => c.replace(/\s+/g, ' ').trim()).join(" and ");
 };
 
-const extractDOI = (url: string): string | undefined => {
+export const extractDOI = (url: string): string | undefined => {
     try {
         const u = new URL(url);
         if (u.hostname.includes('doi.org')) {
@@ -38,6 +38,55 @@ const extractDOI = (url: string): string | undefined => {
     return undefined;
 };
 
+// Content-Type headers for DOI citation API
+const DOI_CONTENT_TYPES = {
+    bibtex: 'application/x-bibtex', // Supported by all RAs
+    ris: 'application/x-research-info-systems', // Supported by Crossref and DataCite
+    csljson: 'application/vnd.citationstyles.csl+json', // Supported by all RAs
+} as const;
+
+// In-memory cache for DOI citations
+// Key format: "doi|format"
+const citationCache = new Map<string, string>();
+
+/**
+ * Fetch citation from DOI.org API with caching
+ * @param doi - The DOI identifier (e.g., "10.1016/j.nimb.2023.03.031")
+ * @param format - Citation format
+ * @returns Citation string or null if failed
+ */
+export const fetchDOICitation = async (doi: string, format: keyof typeof DOI_CONTENT_TYPES): Promise<string | null> => {
+    const cacheKey = `${doi}|${format}`;
+    const cached = citationCache.get(cacheKey);
+    if (cached) {
+        console.debug(`Using cached citation for ${doi} (${format})`);
+        return cached;
+    }
+
+    try {
+        const response = await fetch(`https://doi.org/${encodeURIComponent(doi)}`, {
+            headers: {
+                'Accept': DOI_CONTENT_TYPES[format]
+            }
+        });
+
+        if (!response.ok) {
+            console.warn(`DOI API returned ${response.status} for ${doi}`);
+            return null;
+        }
+
+        const text = await response.text();
+        if (text) {
+            // Store in cache
+            citationCache.set(cacheKey, text);
+            console.debug(`Cached citation for ${doi} (${format})`);
+        }
+        return text || null;
+    } catch (error) {
+        console.warn('Failed to fetch citation from DOI API:', error);
+        return null;
+    }
+};
 export const generateBibTeX = (ds: BackendDataset): string => {
     const year = extractYear(ds.publication_date);
     const keyBase = `${firstCreatorLastName(ds._source.creators.map(creator => creator.creatorName))}_${year}_${ds._id}`.replace(/[^A-Za-z0-9_]/g, "");
@@ -64,7 +113,7 @@ export const generateBibTeX = (ds: BackendDataset): string => {
 export const generateRIS = (ds: BackendDataset): string => {
     const year = extractYear(ds.publication_date);
     const date = new Date(ds.publication_date);
-    const datePart = isNaN(date.getTime()) ? '' : `${date.getUTCFullYear()}/${String(date.getUTCMonth()+1).padStart(2,'0')}/${String(date.getUTCDate()).padStart(2,'0')}`;
+    const datePart = isNaN(date.getTime()) ? '' : `${date.getUTCFullYear()}/${String(date.getUTCMonth() + 1).padStart(2, '0')}/${String(date.getUTCDate()).padStart(2, '0')}`;
     const doi = extractDOI(ds._id);
     const lines: string[] = [];
     lines.push('TY  - DATA');
@@ -96,16 +145,16 @@ export const generateCSLJSON = (ds: BackendDataset): string => {
     const year = extractYear(ds.publication_date);
     const date = new Date(ds.publication_date);
     const dateParts = isNaN(date.getTime()) ? undefined : [[date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()]];
-    const authors = ds._source.creators?.map(c => ({ literal: c.creatorName.trim() })).filter(a => a.literal.length);
+    const authors = ds._source.creators?.map(c => ({literal: c.creatorName.trim()})).filter(a => a.literal.length);
     const obj: Record<string, unknown> = {
         type: 'dataset',
         id: ds._id,
         title: ds.title,
         author: authors.length ? authors : undefined,
-        issued: dateParts ? { 'date-parts': dateParts } : undefined,
+        issued: dateParts ? {'date-parts': dateParts} : undefined,
         URL: ds._id,
-        accessed: { 'date-parts': [[new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate()]] },
-        'original-date': year !== 'n.d.' ? { 'date-parts': [[Number(year)]] } : undefined,
+        accessed: {'date-parts': [[new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate()]]},
+        'original-date': year !== 'n.d.' ? {'date-parts': [[Number(year)]]} : undefined,
         keyword: ds._source.subjects && ds._source.subjects.length ? ds._source.subjects.map(subj => subj.subject).join(', ') : undefined,
         'container-title': undefined
     };
